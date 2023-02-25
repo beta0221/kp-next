@@ -1,20 +1,19 @@
-import Navbar from "components/Navbar"
+import MainTemplate from "components/template/MainTemplate"
 import Banner from "components/Banner"
 import ProductList from "components/ProductList"
 import BlogSection from "components/BlogSection"
 import Testimonial from "components/Testimonial"
-import Footer from "components/Footer"
 
 export default function Home() {
 
   return (
     <>
-      <Navbar />
-      <Banner />
-      <ProductList />
-      <BlogSection />
-      <Testimonial />
-      <Footer />
+      <MainTemplate>
+        <Banner />
+        <ProductList />
+        <BlogSection />
+        <Testimonial />
+      </MainTemplate>
     </>
   )
 }
