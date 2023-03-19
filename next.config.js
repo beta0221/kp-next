@@ -9,6 +9,17 @@ const nextConfig = {
   //     },
   //   ]
   // },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.kingpork.com.tw',
+        port: '',
+        pathname: '**',
+      },
+    ],
+  },
 }
 
 module.exports = nextConfig

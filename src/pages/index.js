@@ -5,20 +5,31 @@ import BlogSection from "components/BlogSection"
 import Testimonial from "components/Testimonial"
 
 export async function getStaticProps(context) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/landing/categories`)
+
+  const [bannersRes, catsRes] = await Promise.all([
+    fetch(`${process.env.NEXT_PUBLIC_HOST}/api/landing/banners`),
+    fetch(`${process.env.NEXT_PUBLIC_HOST}/api/landing/categories`)
+  ])
+
+  const [banners, cats] = await Promise.all([
+    bannersRes.json(), 
+    catsRes.json()
+  ]);
+
   return {
-      props: { 
-          cats : await res.json()
-      }
+    props: { 
+      banners: banners,
+      cats : cats
+    }
   }
 }
 
-export default function Home({ cats }) {
+export default function Home({ banners, cats }) {
 
   return (
     <>
       <MainTemplate>
-        <Banner />
+        <Banner banners={banners}/>
         <ProductList cats={cats} />
         <BlogSection />
         <Testimonial />
