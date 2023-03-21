@@ -3,6 +3,7 @@ import Banner from "components/Banner"
 import ProductList from "components/ProductList"
 import BlogSection from "components/BlogSection"
 import Testimonial from "components/Testimonial"
+import CategoryContext from "utilities/CategoryContext"
 
 export async function getStaticProps(context) {
 
@@ -27,13 +28,13 @@ export async function getStaticProps(context) {
 export default function Home({ banners, cats }) {
 
   return (
-    <>
+    <CategoryContext.Provider value={cats}>
       <MainTemplate>
         <Banner banners={banners}/>
-        <ProductList cats={cats} />
+        <ProductList />
         <BlogSection />
         <Testimonial />
       </MainTemplate>
-    </>
+    </CategoryContext.Provider>
   )
 }

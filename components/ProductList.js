@@ -1,5 +1,9 @@
+import { useContext } from "react";
+import CategoryContext from "utilities/CategoryContext"
 
-export default function ProductList({ cats }){
+export default function ProductList(){
+
+    const cats = useContext(CategoryContext)
 
     return (
         

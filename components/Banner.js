@@ -45,17 +45,17 @@ export default function Banner({ banners }) {
             {/* 左邊按鈕 */}
             <AiOutlineLeft
                 onClick={handlePrevSlide}
-                className="absolute left-0 m-auto text-5xl inset-y-1/2 cursor-pointer text-gray-400 z-20"
+                className="absolute left-0 m-auto text-5xl inset-y-1/2 cursor-pointer text-gray-400 z-10"
             />
 
             {/* 右邊按鈕 */}
             <AiOutlineRight
                 onClick={handleNextSlide}
-                className="absolute right-0 m-auto text-5xl inset-y-1/2 cursor-pointer text-gray-400 z-20"
+                className="absolute right-0 m-auto text-5xl inset-y-1/2 cursor-pointer text-gray-400 z-10"
             />
 
             {/* 點 */}
-            <div className="absolute left-0 right-0 bottom-0 flex justify-center p-2 z-20">
+            <div className="absolute left-0 right-0 bottom-0 flex justify-center p-2 z-10">
                 {banners.map((_, index) => {
                     return (
                         <div
