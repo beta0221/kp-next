@@ -8,57 +8,7 @@ const navigation = {
     categories: [
         {
             id: 1,
-            name: '購物趣',
-            featured: [
-                {
-                    name: 'New Arrivals',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg',
-                    imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
-                },
-                {
-                    name: 'Basic Tees',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
-                    imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-                },
-                {
-                    name: 'Basic Tees',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
-                    imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-                },
-                {
-                    name: 'Basic Tees',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
-                    imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-                },
-                {
-                    name: 'Basic Tees',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
-                    imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-                },
-                {
-                    name: 'Basic Tees',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
-                    imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-                },
-                {
-                    name: 'Basic Tees',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
-                    imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-                },
-                {
-                    name: 'Basic Tees',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
-                    imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-                },
-            ]
+            name: '購物趣'
         },
     ],
     pages: [
@@ -148,19 +98,17 @@ const CategoryNavbar = () => {
                                     <Tab.Panels as={Fragment}>
                                         {navigation.categories.map((category) => (
                                             <Tab.Panel key={category.name} className="space-y-10 px-4 pt-10 pb-8">
-                                                <div className="grid grid-cols-2 gap-x-4">
-                                                    {category.featured.map((item) => (
-                                                        <div key={item.name} className="group relative text-sm">
-                                                            <div className="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                                                <img src={item.imageSrc} alt={item.imageAlt} className="object-cover object-center" />
+                                                <div className="grid grid-cols-2 gap-x-4 gap-y-4">
+                                                    {cats.map((cat) => (
+                                                        <div key={cat.id} className="group relative text-sm">
+                                                            
+                                                            <div className="aspect-[7/4] overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                                                            <span className="absolute left-2 top-2 inset-0 z-10 text-white" aria-hidden="true" >{cat.name}</span>
+                                                                <a href={cat.menuImgUrl}>
+                                                                    <img src={cat.menuImgUrl} alt={cat.name} className="w-full h-full object-cover object-center" />
+                                                                </a>
                                                             </div>
-                                                            <a href={item.href} className="mt-6 block font-medium text-gray-900">
-                                                                <span className="absolute inset-0 z-10" aria-hidden="true" />
-                                                                {item.name}
-                                                            </a>
-                                                            <p aria-hidden="true" className="mt-1">
-                                                                Shop now
-                                                            </p>
+                                                            
                                                         </div>
                                                     ))}
                                                 </div>
