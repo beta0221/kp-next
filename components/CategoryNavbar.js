@@ -1,8 +1,7 @@
 
-import { Fragment, useState, useContext } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import CategoryContext from "utilities/CategoryContext"
 
 const navigation = {
     categories: [
@@ -24,8 +23,15 @@ function classNames(...classes) {
 
 const CategoryNavbar = () => {
     const [open, setOpen] = useState(false)
+    const [cats, setCats] = useState([])
 
-    const cats = useContext(CategoryContext)
+    useEffect(() => {
+        fetch('/api/categories')
+        .then((res) => res.json())
+        .then((cats) => {
+            setCats(cats)
+        })
+    }, [])
 
     return (
         <div className="bg-white z-30">
