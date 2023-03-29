@@ -10,11 +10,13 @@ export default function ProductList({cats}){
                     {cats.map((cat) => (
                         <div key={cat.id} className="group relative">
                             <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
-                                <img
-                                    src={cat.imgUrl}
-                                    alt={cat.name}
-                                    className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                                />
+                                <a href={`shop/${cat.slug}`}>
+                                    <img
+                                        src={cat.imgUrl}
+                                        alt={cat.name}
+                                        className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                                    />
+                                </a>
                             </div>
                         </div>
                     ))}

@@ -243,11 +243,13 @@ const CategoryNavbar = () => {
                                                                             {cats.map((item) => (
                                                                                 <div key={item.name} className="group relative text-base sm:text-sm">
                                                                                     <div className="aspect-[7/4] overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                                                                        <img
-                                                                                            src={item.menuImgUrl}
-                                                                                            alt={item.name}
-                                                                                            className="h-full w-full object-cover"
-                                                                                        />
+                                                                                        <a href={`/shop/${item.slug}`}>
+                                                                                            <img
+                                                                                                src={item.menuImgUrl}
+                                                                                                alt={item.name}
+                                                                                                className="h-full w-full object-cover"
+                                                                                            />
+                                                                                        </a>
 
                                                                                         <div className='absolute top-2 left-4 text-white'>
                                                                                             {item.name}    
