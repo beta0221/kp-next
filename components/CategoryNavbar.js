@@ -21,9 +21,19 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const CategoryNavbar = () => {
+const CategoryNavbar = ({loadCartItems}) => {
     const [open, setOpen] = useState(false)
     const [cats, setCats] = useState([])
+    const [cartItems, setCartItems] = useState([])
+
+    const loadCartItemsRequest =  async () => {
+        console.log('loadCartItemsRequest')
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/items`)
+        const _cartItems = await res.json()
+        setCartItems(_cartItems)
+        
+    }
 
     useEffect(() => {
         fetch('/api/categories')
@@ -32,6 +42,10 @@ const CategoryNavbar = () => {
             setCats(cats)
         })
     }, [])
+
+    useEffect(() => {
+        loadCartItemsRequest()
+    }, [loadCartItems])
 
     return (
         <div className="bg-white z-30">
@@ -320,7 +334,7 @@ const CategoryNavbar = () => {
                                             className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                             aria-hidden="true"
                                         />
-                                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cartItems.length}</span>
                                         <span className="sr-only">items in cart, view bag</span>
                                     </a>
                                 </div>

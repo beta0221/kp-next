@@ -1,7 +1,11 @@
-
+import { useContext } from 'react'
+import NavbarContext from 'utilities/NavbarContext'
 
 
 function ProductSelectorCell({ product, index }) {
+
+    const navbarContext = useContext(NavbarContext)
+
 
     const addToCart = async (productId) => {
 
@@ -18,6 +22,9 @@ function ProductSelectorCell({ product, index }) {
         })
         const data = await res.json()
         
+        if (data == 'success') {
+            navbarContext.reloadCartItems()
+        }
     }
 
     return (
