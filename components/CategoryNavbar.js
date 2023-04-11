@@ -2,6 +2,7 @@
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import SideCart from "components/SideCart";
 
 const navigation = {
     categories: [
@@ -22,7 +23,11 @@ function classNames(...classes) {
 }
 
 const CategoryNavbar = ({loadCartItems}) => {
+    
     const [open, setOpen] = useState(false)
+    // 購物車
+    const [openCart, setOpenCart] = useState(false)
+
     const [cats, setCats] = useState([])
     const [cartItems, setCartItems] = useState([])
 
@@ -48,6 +53,8 @@ const CategoryNavbar = ({loadCartItems}) => {
     }, [loadCartItems])
 
     return (
+        <>
+        <SideCart openCart={openCart} setOpenCart={setOpenCart} cartItems={cartItems} />
         <div className="bg-white z-30">
             {/* Mobile menu */}
             <Transition.Root show={open} as={Fragment}>
@@ -329,7 +336,7 @@ const CategoryNavbar = ({loadCartItems}) => {
 
                                 {/* Cart */}
                                 <div className="ml-4 flow-root lg:ml-6">
-                                    <a href="#" className="group -m-2 flex items-center p-2">
+                                    <a onClick={() => setOpenCart(true)} className="group -m-2 flex items-center p-2">
                                         <ShoppingBagIcon
                                             className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                             aria-hidden="true"
@@ -344,6 +351,7 @@ const CategoryNavbar = ({loadCartItems}) => {
                 </nav>
             </header>
         </div>
+        </>
     );
 }
 
