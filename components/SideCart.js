@@ -1,9 +1,32 @@
 
-import { Fragment, useState } from 'react'
+import { Fragment, useContext } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import Image from 'next/image'
+import NavbarContext from 'utilities/NavbarContext'
+
+const myLoader = ({ src }) => {
+  return src
+}
 
 export default function SideCart({openCart, setOpenCart, cartItems}) {
+
+  const navbarContext = useContext(NavbarContext)
+
+  async function removeItem(productId) {
+    
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/remove/${productId}`, {
+      headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Credentials': 'true',
+          'Accept': 'application/json'
+      },
+      method: 'POST'
+  })
+    const data = await res.json()
+    navbarContext.reloadCartItems()
+  }
+
 
   return (
     <Transition.Root show={openCart} as={Fragment}>
@@ -63,9 +86,19 @@ export default function SideCart({openCart, setOpenCart, cartItems}) {
 
                     <div className="relative mt-6 flex-1 px-4 sm:px-6">
                         {cartItems.map((item) => (
-                            <>
-                                <h3>{item.name}</h3>
-                            </>
+                            <div className='my-2 grid grid-cols-8 gap-2'>
+                              <div className='col-span-2 relative aspect-square'>
+                                <Image fill={true} loader={myLoader} src={item.imgUrl} alt={item.name} />
+                              </div>
+                                
+                              <div className='col-span-5'>{item.name}</div>
+                              
+                              <button type="button" onClick={() => removeItem(item.id)}
+                                  className="rounded-md text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white" >
+                                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                              </button>
+
+                            </div>
                         ))}
                     </div>
 
