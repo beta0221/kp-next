@@ -24,6 +24,7 @@ function ProductSelectorCell({ product, index }) {
         
         if (data == 'success') {
             navbarContext.reloadCartItems()
+            navbarContext.notify({title:'成功！',text:'商品已加入購物車'})
         }
     }
 
