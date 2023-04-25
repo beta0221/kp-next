@@ -86,7 +86,7 @@ export default function SideCart({openCart, setOpenCart, cartItems}) {
 
                     <div className="relative mt-6 flex-1 px-4 sm:px-6">
                         {cartItems.map((item) => (
-                            <div className='my-2 grid grid-cols-8 gap-2'>
+                            <div key={item.id} className='my-2 grid grid-cols-8 gap-2'>
                               <div className='col-span-2 relative aspect-square'>
                                 <Image fill={true} loader={myLoader} src={item.imgUrl} alt={item.name} />
                               </div>
