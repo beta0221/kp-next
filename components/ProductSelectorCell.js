@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import NavbarContext from 'utilities/NavbarContext'
-
+import authHeaders from 'utilities/Request'
 
 function ProductSelectorCell({ product, index }) {
 
@@ -13,16 +13,10 @@ function ProductSelectorCell({ product, index }) {
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/add`, {
             body: JSON.stringify(body),
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Credentials': 'true',
-                'Accept': 'application/json'
-            },
+            headers: authHeaders(),
             method: 'POST'
         })
-        const data = await res.json()
-        
-        if (data == 'success') {
+        if (res.status == 200) {
             navbarContext.reloadCartItems()
             navbarContext.notify({title:'成功！',text:'商品已加入購物車'})
         }

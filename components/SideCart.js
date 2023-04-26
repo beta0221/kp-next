@@ -4,6 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import NavbarContext from 'utilities/NavbarContext'
+import authHeaders from 'utilities/Request'
 
 const myLoader = ({ src }) => {
   return src
@@ -16,11 +17,7 @@ export default function SideCart({openCart, setOpenCart, cartItems}) {
   async function removeItem(productId) {
     
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/remove/${productId}`, {
-      headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Credentials': 'true',
-          'Accept': 'application/json'
-      },
+      headers: authHeaders(),
       method: 'POST'
   })
     const data = await res.json()

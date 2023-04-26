@@ -3,6 +3,7 @@ import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import SideCart from "components/SideCart";
+import authHeaders from 'utilities/Request';
 
 const navigation = {
     categories: [
@@ -36,7 +37,9 @@ const CategoryNavbar = ({ loadCartItems }) => {
     const loadCartItemsRequest = async () => {
         console.log('loadCartItemsRequest')
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/items`)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/items`,{
+            headers: authHeaders()
+        })
         const _cartItems = await res.json()
         setCartItems(_cartItems)
 
@@ -50,12 +53,7 @@ const CategoryNavbar = ({ loadCartItems }) => {
             })
 
         fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/auth/user`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Credentials': 'true',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+            headers: authHeaders()
         })
             .then((res) => res.json())
             .then((data) => {
