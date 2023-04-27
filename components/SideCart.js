@@ -74,6 +74,7 @@ export default function SideCart({openCart, setOpenCart, cartItems}) {
                     </div>
                   </Transition.Child>
                   <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                    
                     <div className="px-4 sm:px-6">
                       <Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
                         購物車
@@ -97,6 +98,12 @@ export default function SideCart({openCart, setOpenCart, cartItems}) {
 
                             </div>
                         ))}
+                    </div>
+
+                    <div className="px-4 sm:px-6">
+                        <a href='/kart' className='bg-red-500 hover:bg-red-600 text-white rounded block text-center py-4'>
+                          前往結賬
+                        </a>
                     </div>
 
 

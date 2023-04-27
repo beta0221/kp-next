@@ -34,15 +34,24 @@ const CategoryNavbar = ({ loadCartItems }) => {
     const [cats, setCats] = useState([])
     const [cartItems, setCartItems] = useState([])
 
+    // 載入購物車
     const loadCartItemsRequest = async () => {
-        console.log('loadCartItemsRequest')
-
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/items`,{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/items`, {
             headers: authHeaders()
         })
         const _cartItems = await res.json()
         setCartItems(_cartItems)
+    }
 
+    // 登出
+    const logout = () => {
+        fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/items`, {
+            headers: authHeaders()
+        })
+        .then((res) => {
+            localStorage.removeItem('token')
+            window.location.href = "/"
+        })
     }
 
     useEffect(() => {
@@ -61,9 +70,6 @@ const CategoryNavbar = ({ loadCartItems }) => {
                     setUser(data)
                 }
             })
-
-
-
     }, [])
 
     useEffect(() => {
@@ -328,9 +334,22 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                         {
                                             (user)
                                                 ? (<>
-                                                    <a className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                    <span className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                                         {user.name}
+                                                    </span>
+
+                                                    <span className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                        紅利：{user.bonus}
+                                                    </span>
+
+                                                    <a href='/' className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                        我的訂單
                                                     </a>
+
+                                                    <button className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                                                        onClick={() => logout()} >
+                                                        登出
+                                                    </button>
                                                 </>)
                                                 : (<>
                                                     <a href="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
@@ -345,7 +364,7 @@ const CategoryNavbar = ({ loadCartItems }) => {
 
                                     </div>
 
-                                    <div className="hidden lg:ml-8 lg:flex">
+                                    {/* <div className="hidden lg:ml-8 lg:flex">
                                         <a href="#" className="flex items-center text-gray-700 hover:text-gray-800">
                                             <img
                                                 src="https://tailwindui.com/img/flags/flag-canada.svg"
@@ -355,27 +374,36 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                             <span className="ml-3 block text-sm font-medium">CAD</span>
                                             <span className="sr-only">, change currency</span>
                                         </a>
-                                    </div>
+                                    </div> */}
 
                                     {/* Search */}
-                                    <div className="flex lg:ml-6">
+                                    {/* <div className="flex lg:ml-6">
                                         <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
                                             <span className="sr-only">Search</span>
                                             <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
                                         </a>
-                                    </div>
+                                    </div> */}
 
                                     {/* Cart */}
                                     <div className="ml-4 flow-root lg:ml-6">
-                                        <a onClick={() => setOpenCart(true)} className="group -m-2 flex items-center p-2">
+                                        <button onClick={() => setOpenCart(true)} className="group -m-2 flex items-center p-2">
                                             <ShoppingBagIcon
                                                 className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                                 aria-hidden="true"
                                             />
                                             <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cartItems.length}</span>
                                             <span className="sr-only">items in cart, view bag</span>
+                                        </button>
+                                    </div>
+
+                                    {/* Checkout */}
+                                    <div className="flex lg:ml-6 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded cursor-pointer">
+                                        <a href='/kart'>
+                                            <span>結帳</span>
                                         </a>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
