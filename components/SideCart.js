@@ -5,6 +5,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import NavbarContext from 'utilities/NavbarContext'
 import authHeaders from 'utilities/Request'
+import KartContext from 'utilities/KartContext'
 
 const myLoader = ({ src }) => {
   return src
@@ -13,6 +14,7 @@ const myLoader = ({ src }) => {
 export default function SideCart({openCart, setOpenCart, cartItems}) {
 
   const navbarContext = useContext(NavbarContext)
+  const kartContext = useContext(KartContext)
 
   async function removeItem(productId) {
     
@@ -22,6 +24,9 @@ export default function SideCart({openCart, setOpenCart, cartItems}) {
   })
     const data = await res.json()
     navbarContext.reloadCartItems()
+    if (kartContext !== undefined) {
+      kartContext.reloadCartItems()
+    }
   }
 
 
