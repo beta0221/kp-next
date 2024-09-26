@@ -1,12 +1,14 @@
 import { useContext } from 'react'
 import Image from 'next/image'
 import NavbarContext from 'utilities/NavbarContext'
+import KartContext from 'utilities/KartContext'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import authHeaders from 'utilities/Request'
 
 function Cart({ cartItems, reloadCartItems }) {
 
     const navbarContext = useContext(NavbarContext)
+    const kartContext = useContext(KartContext)
 
     // 刪除商品
     async function removeItem(productId) {
@@ -20,6 +22,10 @@ function Cart({ cartItems, reloadCartItems }) {
         reloadCartItems()
     }
 
+    // 數量 變更
+    function handleChange(slug, quantity) {
+        kartContext.updateQuantity(slug, quantity)
+    }
 
     return (
         <>
@@ -49,9 +55,11 @@ function Cart({ cartItems, reloadCartItems }) {
                                 </div>
                                 <div className="flex-none">
                                     <input
+                                        min={1}
                                         type="number"
-                                        value={1}
+                                        value={item.quantity}
                                         className="w-12 rounded-md border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        onChange={(e) => handleChange(item.slug, e.target.value)}
                                     />
                                 </div>
                                 <div className="flex-none">
