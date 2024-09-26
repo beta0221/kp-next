@@ -1,9 +1,47 @@
-
+import { useState, useEffect } from 'react'
 import { StarIcon } from '@heroicons/react/24/outline'
-
-
+import { map, find, propEq, forEach, isNil } from 'ramda';
+import CityCountyData from './CityCountyData'
+import Select from 'react-select';
 
 function CheckoutForm() {
+
+    // 被選區域
+    const [district, setDistrict] = useState(null)
+    // 被選縣市
+    const [city, setCity] = useState(null)
+    // 被選縣市的相依區域
+    const [districts, setDistricts] = useState([])
+
+    const [checkoutForm, setCheckoutForm] = useState({
+        name: null,
+        gender: null,
+        email: null
+    })
+
+
+    // city 改變對應動作
+    useEffect(() => {
+        if(!isNil(city)) setDistricts(districtOpts(city))
+    }, [city]);
+
+    // city change 事件處理
+    const handleCityChange = e => {
+        setDistrict(null)
+        setCity(e.value)
+    }
+
+    // selectedCity
+    const selectedCity = (cityName) => ({ value: cityName, label: isNil(cityName) ? '請選擇縣市' : cityName })
+    // selectedDistrict
+    const selectedDistrict = (districtName) => ({ value: districtName, label: isNil(districtName) ? '請選擇地區' : districtName })
+    // 當前縣市選項
+    const cities = () => map((city) => ({ value: city.CityName, label: city.CityName }), CityCountyData);
+    // 當前區域選項
+    const findDistricts = (cityName) => find(propEq(cityName, 'CityName'))(CityCountyData)?.AreaList
+    // 區域選項 (符合下拉式選單的格式)
+    const districtOpts = (cityName) => map((d) => ({ value: d.AreaName, label: d.AreaName, zip: d.ZipCode }), findDistricts(cityName))
+
     return (
         <>
 
@@ -14,8 +52,8 @@ function CheckoutForm() {
                         {/* <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2> */}
                         {/* <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p> */}
 
-                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                            <div className="sm:col-span-3">
+                        <div className="mt-10 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-6">
+                            <div className="sm:col-span-2">
                                 <label htmlFor="first-name" className="inline-block text-sm font-medium leading-6 text-gray-900">
                                     收件人
                                 </label>
@@ -62,11 +100,14 @@ function CheckoutForm() {
                                 </div>
                             </div>
 
-                            <div className="sm:col-span-4">
+                            <div className="sm:col-span-3 sm:col-start-1">
                                 <label htmlFor="email" className="inline-block text-sm font-medium leading-6 text-gray-900">
                                     E-mail
                                 </label>
                                 <StarIcon className="mx-1 inline-block align-top h-5 w-5 text-red-400" aria-hidden="true" />
+                                <label className='text-xs'>
+                                    (電子發票將寄送至此信箱)
+                                </label>
                                 <div className="mt-2">
                                     <input
                                         id="email"
@@ -79,7 +120,7 @@ function CheckoutForm() {
                                 </div>
                             </div>
 
-                            <div className="sm:col-span-4">
+                            <div className="sm:col-span-3 sm:col-start-1">
                                 <label htmlFor="phone" className="inline-block text-sm font-medium leading-6 text-gray-900">
                                     聯絡電話
                                 </label>
@@ -97,37 +138,37 @@ function CheckoutForm() {
                             </div>
 
                             <div className="sm:col-span-2 sm:col-start-1">
-                                <label htmlFor="country" className="inline-block text-sm font-medium leading-6 text-gray-900">
+                                <label className="inline-block text-sm font-medium leading-6 text-gray-900">
                                     地址
                                 </label>
                                 <StarIcon className="mx-1 inline-block align-top h-5 w-5 text-red-400" aria-hidden="true" />
                                 <div className="mt-2">
-                                    <select
-                                        id="country"
-                                        name="country"
-                                        autoComplete="country-name"
+                                    <Select
+                                        id="county"
+                                        name="county"
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                                    >
-                                        <option>United States</option>
-                                        <option>Canada</option>
-                                        <option>Mexico</option>
-                                    </select>
+                                        placeholder='選擇城市'
+                                        options={cities()}
+                                        onChange={handleCityChange}
+                                        value={selectedCity(city)}
+                                    />
+                                    
                                 </div>
                             </div>
 
                             <div className="sm:col-span-2">
 
                                 <div className="mt-8">
-                                    <select
-                                        id="country"
-                                        name="country"
-                                        autoComplete="country-name"
+                                    <Select
+                                        id="district"
+                                        name="district"
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                                    >
-                                        <option>United States</option>
-                                        <option>Canada</option>
-                                        <option>Mexico</option>
-                                    </select>
+                                        placeholder='選擇地區'
+                                        options={districts}
+                                        onChange={(e) => setDistrict(e.value)}
+                                        value={selectedDistrict(district)}
+                                    />
+                                    
                                 </div>
                             </div>
 
@@ -226,13 +267,13 @@ function CheckoutForm() {
                             </div>
 
                             <div className="sm:col-span-4 sm:col-start-1">
-                            
+
 
                                 <label htmlFor="country" className="inline-block text-sm font-medium leading-6 text-gray-900">
                                     付款方式
                                 </label>
                                 <StarIcon className="mx-1 inline-block align-top h-5 w-5 text-red-400" aria-hidden="true" />
-                                
+
                                 <div className="flex justify-between mt-2 gap-x-3 rounded-md border-0 ring-1 ring-inset ring-gray-600 py-1.5 px-2">
                                     <div className="flex items-center gap-x-3">
                                         <input

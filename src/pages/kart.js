@@ -1,8 +1,8 @@
 import { Fragment, useState, useEffect } from 'react'
 import MainTemplate from "components/template/MainTemplate"
 import KartContext from 'utilities/KartContext';
-import Cart from 'components/Cart'
-import CheckoutForm from 'components/CheckoutForm';
+import Cart from 'components/cart/Cart'
+import CheckoutForm from 'components/cart/CheckoutForm';
 import authHeaders from 'utilities/Request';
 
 
