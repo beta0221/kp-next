@@ -21,17 +21,37 @@ function CheckoutForm() {
     const [isReceiptTypeTwo, setIsReceiptTypeTwo] = useState(true)
 
     const [checkoutForm, setCheckoutForm] = useState({
-        name: null,
-        gender: null,
-        email: null,
-        bonus: 0
+        ship_name: null,
+        ship_gender: null,
+        ship_email: null,
+        ship_phone: null,
+        ship_county: null,
+        ship_district: null,
+        ship_address: null,
+        ship_receipt: 2,
+        ship_three_id: null,
+        ship_three_company: null,
+        ship_memo: null,
+        bonus: 0,
+        ship_pay_by: null
     })
 
+    const handleFormChange = ((key, value) => {
+        let _form = Object.assign({}, checkoutForm)
+        _form[key] = value
+        setCheckoutForm(_form)
+    }) 
 
     // city 改變對應動作
     useEffect(() => {
         if(!isNil(city)) setDistricts(districtOpts(city))
+        handleFormChange('ship_county', city)
     }, [city]);
+
+    // district 改變對應動作
+    useEffect(() => {
+        handleFormChange('ship_district', district)
+    }, [district]);
 
     // city change 事件處理
     const handleCityChange = e => {
@@ -53,6 +73,7 @@ function CheckoutForm() {
     // 發票 change 事件處理
     const handleReceiptChange = (e => {
         setReceiptType(e.value)
+        handleFormChange('ship_receipt', e.value)
     })
     // 發票種類 選項
     const receiptTypes = [
@@ -67,17 +88,9 @@ function CheckoutForm() {
         setIsReceiptTypeTwo(receiptType == 2)
     }, [receiptType]);
 
-    // 紅利 change 事件處理
-    const handleBonusChange = (e => {
-        let bonus = e.target.value
-        const _checkoutForm = Object.assign({}, checkoutForm)
-        _checkoutForm.bonus = bonus
-        setCheckoutForm(_checkoutForm)
-    })
     // 檢查 紅利
     const checkBonus = (e => {
-        const _checkoutForm = Object.assign({}, checkoutForm)
-        let bonus = _checkoutForm.bonus
+        let bonus = checkoutForm.bonus
         let max = kartContext.user?.bonus ?? 0
         if (bonus > max) {
             bonus = max
@@ -86,8 +99,7 @@ function CheckoutForm() {
         } else if (bonus / 50 > kartContext.checkoutTotal) {
             bonus = kartContext.checkoutTotal * 50
         }
-        _checkoutForm.bonus = bonus
-        setCheckoutForm(_checkoutForm)
+        handleFormChange('bonus', bonus)
     })
 
     return (
@@ -111,6 +123,8 @@ function CheckoutForm() {
                                         type="text"
                                         placeholder="收件人"
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        value={checkoutForm.ship_name}
+                                        onChange={e => {handleFormChange('ship_name', e.target.value)}}
                                     />
                                 </div>
                             </div>
@@ -124,6 +138,8 @@ function CheckoutForm() {
                                             name="gender"
                                             type="radio"
                                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                            value={1}
+                                            onChange={e => handleFormChange('ship_gender', e.target.value)}
                                         />
                                         <label htmlFor="gender-male" className="block text-sm font-medium leading-6 text-gray-900">
                                             先生
@@ -135,6 +151,8 @@ function CheckoutForm() {
                                             name="gender"
                                             type="radio"
                                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                            value={2}
+                                            onChange={e => handleFormChange('ship_gender', e.target.value)}
                                         />
                                         <label htmlFor="gender-female" className="block text-sm font-medium leading-6 text-gray-900">
                                             小姐
@@ -159,6 +177,8 @@ function CheckoutForm() {
                                         type="email"
                                         placeholder="E-mail"
                                         className="block w-full rounded-md border-0 py-1.5 px-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        value={checkoutForm.ship_email}
+                                        onChange={e => {handleFormChange('ship_email', e.target.value)}}
                                     />
                                 </div>
                             </div>
@@ -174,6 +194,8 @@ function CheckoutForm() {
                                         type="phone"
                                         placeholder="聯絡電話"
                                         className="block w-full rounded-md border-0 py-1.5 px-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        value={checkoutForm.ship_phone}
+                                        onChange={e => {handleFormChange('ship_phone', e.target.value)}}
                                     />
                                 </div>
                             </div>
@@ -212,11 +234,13 @@ function CheckoutForm() {
                             </div>
 
                             <div className="sm:col-span-4">
-                                <div className="">
+                                <div>
                                     <input
                                         type="text"
                                         placeholder="地址"
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        value={checkoutForm.ship_address}
+                                        onChange={e => {handleFormChange('ship_address', e.target.value)}}
                                     />
                                 </div>
                             </div>
@@ -245,6 +269,7 @@ function CheckoutForm() {
                                         type="text"
                                         placeholder="統一編號"
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        onChange={e => handleFormChange('ship_three_id', e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -258,6 +283,7 @@ function CheckoutForm() {
                                         type="text"
                                         placeholder="公司名稱"
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        onChange={e => handleFormChange('ship_three_company', e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -272,6 +298,8 @@ function CheckoutForm() {
                                         placeholder='備註'
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         defaultValue={''}
+                                        value={checkoutForm.ship_memo}
+                                        onChange={e => {handleFormChange('ship_memo', e.target.value)}}
                                     />
                                 </div>
                             </div>
@@ -285,7 +313,7 @@ function CheckoutForm() {
                                         type="text"
                                         placeholder="使用紅利"
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        onChange={handleBonusChange}
+                                        onChange={e => {handleFormChange('bonus', e.target.value)}}
                                         value={checkoutForm.bonus}
                                         onBlur={checkBonus}
                                     />
@@ -307,6 +335,8 @@ function CheckoutForm() {
                                             name="ship_pay_by"
                                             type="radio"
                                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                            value='CREDIT'
+                                            onChange={e => handleFormChange('ship_pay_by', e.target.value)}
                                         />
                                         <label htmlFor='pay_by_credit' className="block text-sm font-medium leading-6 text-gray-900">
                                             信用卡
@@ -318,6 +348,8 @@ function CheckoutForm() {
                                             name="ship_pay_by"
                                             type="radio"
                                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                            value='ATM'
+                                            onChange={e => handleFormChange('ship_pay_by', e.target.value)}
                                         />
                                         <label htmlFor="pay_by_atm" className="block text-sm font-medium leading-6 text-gray-900">
                                             ATM
@@ -329,6 +361,8 @@ function CheckoutForm() {
                                             name="ship_pay_by"
                                             type="radio"
                                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                            value='cod'
+                                            onChange={e => handleFormChange('ship_pay_by', e.target.value)}
                                         />
                                         <label htmlFor="pay_by_cod" className="block text-sm font-medium leading-6 text-gray-900">
                                             貨到付款
@@ -349,11 +383,14 @@ function CheckoutForm() {
                     <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
                         取消
                     </button>
-                    <button
+                    <div
                         className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                        onClick={e => {
+                            console.log(checkoutForm)
+                        }}
                     >
                         送出訂單
-                    </button>
+                    </div>
                 </div>
             </form>
         </>
