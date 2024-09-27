@@ -1706,11 +1706,6 @@
                 "AreaEngName": "Donggang Township"
             },
             {
-                "ZipCode": "929",
-                "AreaName": "琉球鄉",
-                "AreaEngName": "Liuqiu Township"
-            },
-            {
                 "ZipCode": "931",
                 "AreaName": "佳冬鄉",
                 "AreaEngName": "Jiadong Township"
@@ -1770,16 +1765,6 @@
                 "ZipCode": "950",
                 "AreaName": "臺東市",
                 "AreaEngName": "Taitung City"
-            },
-            {
-                "ZipCode": "951",
-                "AreaName": "綠島鄉",
-                "AreaEngName": "Ludao Township"
-            },
-            {
-                "ZipCode": "952",
-                "AreaName": "蘭嶼鄉",
-                "AreaEngName": "Lanyu Township"
             },
             {
                 "ZipCode": "953",

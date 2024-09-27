@@ -4,12 +4,16 @@ import KartContext from 'utilities/KartContext';
 import Cart from 'components/cart/Cart'
 import CheckoutForm from 'components/cart/CheckoutForm';
 import authHeaders from 'utilities/Request';
+import AuthApi from 'utilities/service/AuthApi';
 
 
 function kart() {
 
     const [cartItems, setCartItems] = useState([])
 
+    const [user, setUser] = useState(null)
+
+    const [checkoutTotal, setCheckoutTotal] = useState(null)
 
     // 載入購物車
     const reloadCartItems = async () => {
@@ -38,10 +42,29 @@ function kart() {
 
     useEffect(() => {
         reloadCartItems()
+        AuthApi.getUser().then(user => {
+            setUser(user)
+        })
     }, [])
 
+    useEffect(() => {
+        const _checkoutTotal = cartItems.map(_item => {
+            return _item.quantity * _item.price
+        }).reduce((acc, cur) => {
+            return acc + cur
+        }, 0)
+        setCheckoutTotal(_checkoutTotal)
+    }, [cartItems])
+
     return (
-        <KartContext.Provider value={{reloadCartItems, updateQuantity}}>
+        <KartContext.Provider value={
+            {
+                reloadCartItems,
+                updateQuantity,
+                user,
+                checkoutTotal
+            }
+        }>
             <MainTemplate>
                 <div className='container mx-auto max-w-3xl py-4 px-4 sm:py-16 sm:px-8'>
                     <h1>購物車</h1>

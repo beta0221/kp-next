@@ -74,6 +74,10 @@ function Cart({ cartItems, reloadCartItems }) {
                     </li>
                 ))}
             </ul>
+
+            <div className='text-right'>
+                <span >小記：{kartContext.checkoutTotal}</span>
+            </div>
         </>
     );
 }
