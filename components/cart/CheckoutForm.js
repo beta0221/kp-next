@@ -12,6 +12,10 @@ function CheckoutForm() {
     const [city, setCity] = useState(null)
     // 被選縣市的相依區域
     const [districts, setDistricts] = useState([])
+    // 發票類型
+    const [receiptType, setReceiptType] = useState(2)
+    // 是否為二連
+    const [isReceiptTypeTwo, setIsReceiptTypeTwo] = useState(true)
 
     const [checkoutForm, setCheckoutForm] = useState({
         name: null,
@@ -41,6 +45,23 @@ function CheckoutForm() {
     const findDistricts = (cityName) => find(propEq(cityName, 'CityName'))(CityCountyData)?.AreaList
     // 區域選項 (符合下拉式選單的格式)
     const districtOpts = (cityName) => map((d) => ({ value: d.AreaName, label: d.AreaName, zip: d.ZipCode }), findDistricts(cityName))
+
+    // 發票 change 事件處理
+    const handleReceiptChange = (e => {
+        setReceiptType(e.value)
+    })
+    // 發票種類 選項
+    const receiptTypes = [
+        {value: 2, label: '二連'},
+        {value: 3, label: '三連'}
+    ]
+    // selectedReceiptType
+    const selectedReceiptType = () => find(propEq(receiptType, 'value'))(receiptTypes)
+    
+    // receiptType 改變對應動作
+    useEffect(() => {
+        setIsReceiptTypeTwo(receiptType == 2)
+    }, [receiptType]);
 
     return (
         <>
@@ -146,7 +167,7 @@ function CheckoutForm() {
                                     <Select
                                         id="county"
                                         name="county"
-                                        className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                        className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                                         placeholder='選擇城市'
                                         options={cities()}
                                         onChange={handleCityChange}
@@ -162,7 +183,7 @@ function CheckoutForm() {
                                     <Select
                                         id="district"
                                         name="district"
-                                        className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                        className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                                         placeholder='選擇地區'
                                         options={districts}
                                         onChange={(e) => setDistrict(e.value)}
@@ -190,19 +211,18 @@ function CheckoutForm() {
                                     發票
                                 </label>
                                 <div className="mt-2">
-                                    <select
-                                        id="envoice-type"
+                                    <Select 
                                         name="envoice-type"
-                                        autoComplete="envoice-type"
-                                        className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                                    >
-                                        <option value={2}>二連</option>
-                                        <option value={3}>三聯</option>
-                                    </select>
+                                        className="block w-full rounded-md border-0  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                        options={receiptTypes}
+                                        onChange={handleReceiptChange}
+                                        value={selectedReceiptType()}
+                                    />
+                                    
                                 </div>
                             </div>
 
-                            <div className="sm:col-span-1">
+                            <div className={"sm:col-span-1 " + (isReceiptTypeTwo ? 'hidden' : '')}>
                                 <label htmlFor="envoice-type" className="block text-sm font-medium leading-6 text-gray-900">
                                     統一編號
                                 </label>
@@ -218,7 +238,7 @@ function CheckoutForm() {
                                 </div>
                             </div>
 
-                            <div className="sm:col-span-2 ">
+                            <div className={"sm:col-span-2 " + (isReceiptTypeTwo ? 'hidden' : '')}>
                                 <label htmlFor="envoice-type" className="block text-sm font-medium leading-6 text-gray-900">
                                     公司名稱
                                 </label>
