@@ -15,6 +15,8 @@ function kart() {
 
     const [checkoutTotal, setCheckoutTotal] = useState(null)
 
+    const [cartConfirmed, setCartConfirmed] = useState(false)
+
     // 載入購物車
     const reloadCartItems = async () => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/items`, {
@@ -62,7 +64,9 @@ function kart() {
                 reloadCartItems,
                 updateQuantity,
                 user,
-                checkoutTotal
+                checkoutTotal,
+                cartConfirmed,
+                setCartConfirmed
             }
         }>
             <MainTemplate>
@@ -71,7 +75,7 @@ function kart() {
 
                     <Cart cartItems={cartItems} reloadCartItems={reloadCartItems} />
 
-                    <h1>訂購人資訊</h1>
+                    
                     <CheckoutForm />
                 </div>  
 

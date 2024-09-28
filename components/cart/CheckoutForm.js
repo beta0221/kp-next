@@ -40,11 +40,11 @@ function CheckoutForm() {
         let _form = Object.assign({}, checkoutForm)
         _form[key] = value
         setCheckoutForm(_form)
-    }) 
+    })
 
     // city 改變對應動作
     useEffect(() => {
-        if(!isNil(city)) setDistricts(districtOpts(city))
+        if (!isNil(city)) setDistricts(districtOpts(city))
         handleFormChange('ship_county', city)
     }, [city]);
 
@@ -77,12 +77,12 @@ function CheckoutForm() {
     })
     // 發票種類 選項
     const receiptTypes = [
-        {value: 2, label: '二連'},
-        {value: 3, label: '三連'}
+        { value: 2, label: '二連' },
+        { value: 3, label: '三連' }
     ]
     // selectedReceiptType
     const selectedReceiptType = () => find(propEq(receiptType, 'value'))(receiptTypes)
-    
+
     // receiptType 改變對應動作
     useEffect(() => {
         setIsReceiptTypeTwo(receiptType == 2)
@@ -102,9 +102,14 @@ function CheckoutForm() {
         handleFormChange('bonus', bonus)
     })
 
-    return (
-        <>
+    const preStep = (e) => {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+        kartContext.setCartConfirmed(false)
+    }
 
+    return (
+        <div className={(kartContext.cartConfirmed ? '': 'hidden')}>
+            <h1>訂購人資訊</h1>
             <form>
                 <div className="space-y-12">
 
@@ -124,7 +129,7 @@ function CheckoutForm() {
                                         placeholder="收件人"
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         value={checkoutForm.ship_name}
-                                        onChange={e => {handleFormChange('ship_name', e.target.value)}}
+                                        onChange={e => { handleFormChange('ship_name', e.target.value) }}
                                     />
                                 </div>
                             </div>
@@ -178,7 +183,7 @@ function CheckoutForm() {
                                         placeholder="E-mail"
                                         className="block w-full rounded-md border-0 py-1.5 px-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         value={checkoutForm.ship_email}
-                                        onChange={e => {handleFormChange('ship_email', e.target.value)}}
+                                        onChange={e => { handleFormChange('ship_email', e.target.value) }}
                                     />
                                 </div>
                             </div>
@@ -195,7 +200,7 @@ function CheckoutForm() {
                                         placeholder="聯絡電話"
                                         className="block w-full rounded-md border-0 py-1.5 px-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         value={checkoutForm.ship_phone}
-                                        onChange={e => {handleFormChange('ship_phone', e.target.value)}}
+                                        onChange={e => { handleFormChange('ship_phone', e.target.value) }}
                                     />
                                 </div>
                             </div>
@@ -214,7 +219,7 @@ function CheckoutForm() {
                                         onChange={handleCityChange}
                                         value={selectedCity(city)}
                                     />
-                                    
+
                                 </div>
                             </div>
 
@@ -229,7 +234,7 @@ function CheckoutForm() {
                                         onChange={(e) => setDistrict(e.value)}
                                         value={selectedDistrict(district)}
                                     />
-                                    
+
                                 </div>
                             </div>
 
@@ -240,7 +245,7 @@ function CheckoutForm() {
                                         placeholder="地址"
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         value={checkoutForm.ship_address}
-                                        onChange={e => {handleFormChange('ship_address', e.target.value)}}
+                                        onChange={e => { handleFormChange('ship_address', e.target.value) }}
                                     />
                                 </div>
                             </div>
@@ -250,13 +255,13 @@ function CheckoutForm() {
                                     發票
                                 </label>
                                 <div className="mt-2">
-                                    <Select 
+                                    <Select
                                         className="block w-full rounded-md border-0  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                                         options={receiptTypes}
                                         onChange={handleReceiptChange}
                                         value={selectedReceiptType()}
                                     />
-                                    
+
                                 </div>
                             </div>
 
@@ -299,7 +304,7 @@ function CheckoutForm() {
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         defaultValue={''}
                                         value={checkoutForm.ship_memo}
-                                        onChange={e => {handleFormChange('ship_memo', e.target.value)}}
+                                        onChange={e => { handleFormChange('ship_memo', e.target.value) }}
                                     />
                                 </div>
                             </div>
@@ -313,7 +318,7 @@ function CheckoutForm() {
                                         type="text"
                                         placeholder="使用紅利"
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        onChange={e => {handleFormChange('bonus', e.target.value)}}
+                                        onChange={e => { handleFormChange('bonus', e.target.value) }}
                                         value={checkoutForm.bonus}
                                         onBlur={checkBonus}
                                     />
@@ -379,12 +384,16 @@ function CheckoutForm() {
 
                 </div>
 
-                <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
-                        取消
-                    </button>
+                <div className="mt-6 flex items-center justify-end gap-x-4">
                     <div
-                        className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                        type="button"
+                        className="btn btn-blue"
+                        onClick={preStep}
+                    >
+                        上一步
+                    </div>
+                    <div
+                        className="btn btn-green"
                         onClick={e => {
                             console.log(checkoutForm)
                         }}
@@ -393,7 +402,7 @@ function CheckoutForm() {
                     </div>
                 </div>
             </form>
-        </>
+        </div>
     );
 }
 

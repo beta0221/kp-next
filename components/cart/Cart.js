@@ -55,6 +55,7 @@ function Cart({ cartItems, reloadCartItems }) {
                                 </div>
                                 <div className="flex-none">
                                     <input
+                                        disabled={kartContext.cartConfirmed ? true: false}
                                         min={1}
                                         type="number"
                                         value={item.quantity}
@@ -63,8 +64,12 @@ function Cart({ cartItems, reloadCartItems }) {
                                     />
                                 </div>
                                 <div className="flex-none">
-                                    <button type="button" onClick={() => removeItem(item.id)}
-                                        className="rounded-md text-gray-800 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white" >
+                                    <button 
+                                        disabled={kartContext.cartConfirmed ? true: false}
+                                        type="button" 
+                                        onClick={() => removeItem(item.id)}
+                                        className={"text-gray-800 hover:text-gray-400 " + (kartContext.cartConfirmed ? 'hidden': '')}
+                                        >
                                         <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                                     </button>
                                 </div>
@@ -75,9 +80,16 @@ function Cart({ cartItems, reloadCartItems }) {
                 ))}
             </ul>
 
-            <div className='text-right'>
-                <span >小記：{kartContext.checkoutTotal}</span>
+            <div className='flex justify-between'>
+                <span className='inline-flex items-center'>小記：{kartContext.checkoutTotal}</span>
+                <button 
+                    onClick={(e) => kartContext.setCartConfirmed(true)}
+                    className={'btn btn-green ' + (kartContext.cartConfirmed ? 'hidden': '')}
+                >
+                    確認購買
+                </button>
             </div>
+            
         </>
     );
 }
