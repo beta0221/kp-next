@@ -4,6 +4,7 @@ import { map, find, propEq, forEach, isNil } from 'ramda';
 import CityCountyData from './CityCountyData'
 import Select from 'react-select';
 import KartContext from 'utilities/KartContext'
+import CartApi from 'utilities/service/CartApi';
 
 function CheckoutForm() {
 
@@ -21,19 +22,19 @@ function CheckoutForm() {
     const [isReceiptTypeTwo, setIsReceiptTypeTwo] = useState(true)
 
     const [checkoutForm, setCheckoutForm] = useState({
-        ship_name: null,
-        ship_gender: null,
-        ship_email: null,
-        ship_phone: null,
-        ship_county: null,
-        ship_district: null,
-        ship_address: null,
+        ship_name: '',
+        ship_gender: '',
+        ship_email: '',
+        ship_phone: '',
+        ship_county: '',
+        ship_district: '',
+        ship_address: '',
         ship_receipt: 2,
-        ship_three_id: null,
-        ship_three_company: null,
-        ship_memo: null,
+        ship_three_id: '',
+        ship_three_company: '',
+        ship_memo: '',
         bonus: 0,
-        ship_pay_by: null
+        ship_pay_by: ''
     })
 
     const handleFormChange = ((key, value) => {
@@ -102,13 +103,39 @@ function CheckoutForm() {
         handleFormChange('bonus', bonus)
     })
 
+    // 上一步
     const preStep = (e) => {
-        window.scrollTo({top: 0, behavior: 'smooth'});
-        kartContext.setCartConfirmed(false)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => {
+            kartContext.setCartConfirmed(false)
+        }, "500");
+    }
+
+    // 結帳
+    const checkout = (e) => {
+        CartApi.checkout(checkoutForm)
+            .then(res => {
+                // console.log(res.status)
+                console.log(res)
+            })
+            .catch(error => {
+                try {
+                    const errorJson = JSON.parse(error.message); // 試圖將錯誤訊息解析為 JSON
+                    handleValidationErrors(errorJson)
+                } catch (parsingError) {
+                    console.error('發生錯誤:', error.message); // 如果無法解析為 JSON，則顯示普通錯誤訊息
+                }
+            })
+    }
+
+    // 資料錯誤處理
+    const handleValidationErrors = (errorJson) => {
+        console.log('handleValidationErrors')
+        console.error('伺服器錯誤:', errorJson);
     }
 
     return (
-        <div className={(kartContext.cartConfirmed ? '': 'hidden')}>
+        <div className={(kartContext.cartConfirmed ? '' : 'hidden')}>
             <h1>訂購人資訊</h1>
             <form>
                 <div className="space-y-12">
@@ -302,7 +329,6 @@ function CheckoutForm() {
                                         rows={2}
                                         placeholder='備註'
                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        defaultValue={''}
                                         value={checkoutForm.ship_memo}
                                         onChange={e => { handleFormChange('ship_memo', e.target.value) }}
                                     />
@@ -394,9 +420,7 @@ function CheckoutForm() {
                     </div>
                     <div
                         className="btn btn-green"
-                        onClick={e => {
-                            console.log(checkoutForm)
-                        }}
+                        onClick={checkout}
                     >
                         送出訂單
                     </div>
