@@ -5,7 +5,8 @@ import CityCountyData from './CityCountyData'
 import Select from 'react-select';
 import KartContext from 'utilities/KartContext'
 import CartApi from 'utilities/service/CartApi';
-import styles from './CheckoutForm.module.css'
+import styles from './CheckoutForm.module.css';
+import FormValidator from 'utilities/FormValidator';
 
 function CheckoutForm() {
 
@@ -41,6 +42,20 @@ function CheckoutForm() {
     // 驗證錯誤資料
     const [errors, setErrors] = useState({})
 
+    // 表單規則
+    const validations = {
+        ship_name: [{ type: 'required' }],
+        ship_gender: [{ type: 'required' }],
+        ship_email: [{ type: 'required' }, { type: 'email' }],
+        ship_phone: [{ type: 'required' }],
+        ship_county: [{ type: 'required' }],
+        ship_district: [{ type: 'required' }],
+        ship_address: [{ type: 'required' }],
+        ship_pay_by: [{ type: 'required' }],
+    };
+    // 驗證氣
+    const validator = new FormValidator(validations)
+
     const handleFormChange = ((key, value) => {
         let _form = Object.assign({}, checkoutForm)
         _form[key] = value
@@ -75,11 +90,11 @@ function CheckoutForm() {
     // 區域選項 (符合下拉式選單的格式)
     const districtOpts = (cityName) => map((d) => ({ value: d.AreaName, label: d.AreaName, zip: d.ZipCode }), findDistricts(cityName))
     // 欄位是否錯誤
-    const hasError = (name) => { return (name in errors) } 
+    const hasError = (name) => { return (name in errors) }
     // 欄位是否錯誤 className
-    const hasErrorInput = (name) => { return (hasError(name) ? styles.errorInput : '')}
+    const hasErrorInput = (name) => { return (hasError(name) ? styles.errorInput : '') }
     // 提示錯誤 className
-    const hasErrorMsg = (name) => {  return hasError(name) ? '' : 'hidden' }
+    const hasErrorMsg = (name) => { return hasError(name) ? '' : 'hidden' }
     // 提示錯誤
     const errorMsg = (name) => { return hasError(name) ? errors[name][0] : '' }
 
@@ -125,6 +140,9 @@ function CheckoutForm() {
 
     // 結帳
     const checkout = (e) => {
+        const isValid = validateForm()
+        if (!isValid) { return }
+
         CartApi.checkout(checkoutForm)
             .then(res => {
                 // console.log(res.status)
@@ -140,11 +158,23 @@ function CheckoutForm() {
             })
     }
 
+    // 驗證 表單資料
+    const validateForm = () => {
+        const validationErrors = validator.validateForm(checkoutForm)
+        
+        if (Object.keys(validationErrors).length > 0) {
+            handleValidationErrors(validationErrors)
+            console.error(validationErrors)
+            return false
+        }
+
+        handleValidationErrors({})
+        return true
+    }
+
     // 資料錯誤處理
     const handleValidationErrors = (errorJson) => {
         setErrors(errorJson)
-        console.log('handleValidationErrors')
-        console.error('伺服器錯誤:', errorJson);
     }
 
     return (
@@ -178,7 +208,7 @@ function CheckoutForm() {
                                 </div>
                             </div>
 
-                            
+
 
                             <div className="sm:col-span-3">
 
@@ -268,9 +298,9 @@ function CheckoutForm() {
                                 <div className="mt-2">
                                     <Select
                                         name="county"
-                                        className={`${styles.select} ${hasErrorInput('ship_county')}`}
                                         placeholder='選擇城市'
                                         options={cities()}
+                                        className={`${styles.input} ${hasErrorInput('ship_county')}`}
                                         onChange={handleCityChange}
                                         value={selectedCity(city)}
                                     />
@@ -285,9 +315,9 @@ function CheckoutForm() {
                                 <div className="mt-8">
                                     <Select
                                         name="district"
-                                        className={`${styles.select} ${hasErrorInput('ship_district')}`}
                                         placeholder='選擇地區'
                                         options={districts}
+                                        className={`${styles.input} ${hasErrorInput('ship_district')}`}
                                         onChange={(e) => setDistrict(e.value)}
                                         value={selectedDistrict(district)}
                                     />
@@ -298,16 +328,16 @@ function CheckoutForm() {
                             </div>
 
                             <div className="sm:col-span-4">
-                                    <input
-                                        type="text"
-                                        placeholder="地址"
-                                        className={`${styles.input} ${hasErrorInput('ship_address')}`}
-                                        value={checkoutForm.ship_address}
-                                        onChange={e => { handleFormChange('ship_address', e.target.value) }}
-                                    />
-                                    <span className={`${styles.errorMsg} ${hasErrorMsg('ship_address')}`}>
-                                        {errorMsg('ship_address')}
-                                    </span>
+                                <input
+                                    type="text"
+                                    placeholder="地址"
+                                    className={`${styles.input} ${hasErrorInput('ship_address')}`}
+                                    value={checkoutForm.ship_address}
+                                    onChange={e => { handleFormChange('ship_address', e.target.value) }}
+                                />
+                                <span className={`${styles.errorMsg} ${hasErrorMsg('ship_address')}`}>
+                                    {errorMsg('ship_address')}
+                                </span>
                             </div>
 
                             <div className="sm:col-span-1 sm:col-start-1">
@@ -396,7 +426,7 @@ function CheckoutForm() {
                                 </label>
                                 <StarIcon className="mx-1 inline-block align-top h-5 w-5 text-red-400" aria-hidden="true" />
 
-                                <div className="flex justify-between mt-2 gap-x-3 rounded-md border-0 ring-1 ring-inset ring-gray-600 py-1.5 px-2">
+                                <div className={`flex justify-between mt-2 gap-x-3 rounded-md border-0 ring-1 ring-inset ring-gray-600 py-1.5 px-2 ${hasErrorInput('ship_pay_by')}`}>
                                     <div className="flex items-center gap-x-3">
                                         <input
                                             id="pay_by_credit"
