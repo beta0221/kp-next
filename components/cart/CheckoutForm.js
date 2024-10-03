@@ -39,11 +39,9 @@ function CheckoutForm() {
         bonus: 0,
         ship_pay_by: ''
     })
-    // 驗證錯誤資料
-    const [errors, setErrors] = useState({})
 
     // 表單規則
-    const validations = {
+    const [validations, setValidations] = useState({
         ship_name: [{ type: 'required' }],
         ship_gender: [{ type: 'required' }],
         ship_email: [{ type: 'required' }, { type: 'email' }],
@@ -52,9 +50,11 @@ function CheckoutForm() {
         ship_district: [{ type: 'required' }],
         ship_address: [{ type: 'required' }],
         ship_pay_by: [{ type: 'required' }],
-    };
-    // 驗證氣
-    const validator = new FormValidator(validations)
+    })
+
+    // 驗證錯誤資料
+    const [errors, setErrors] = useState({})
+    
 
     const handleFormChange = ((key, value) => {
         let _form = Object.assign({}, checkoutForm)
@@ -102,6 +102,15 @@ function CheckoutForm() {
     const handleReceiptChange = (e => {
         setReceiptType(e.value)
         handleFormChange('ship_receipt', e.value)
+        let _validations = Object.assign({}, validations)
+        if (e.value == 3) {
+            _validations['ship_three_id'] = [{ type: 'required' }]
+            _validations['ship_three_company'] = [{ type: 'required' }]
+        } else {
+            delete _validations['ship_three_id']
+            delete _validations['ship_three_company']
+        }
+        setValidations(_validations)
     })
     // 發票種類 選項
     const receiptTypes = [
@@ -160,6 +169,8 @@ function CheckoutForm() {
 
     // 驗證 表單資料
     const validateForm = () => {
+
+        const validator = new FormValidator(validations)
         const validationErrors = validator.validateForm(checkoutForm)
         
         if (Object.keys(validationErrors).length > 0) {
