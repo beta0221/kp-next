@@ -5,6 +5,7 @@ import CityCountyData from './CityCountyData'
 import Select from 'react-select';
 import KartContext from 'utilities/KartContext'
 import CartApi from 'utilities/service/CartApi';
+import styles from './CheckoutForm.module.css'
 
 function CheckoutForm() {
 
@@ -20,12 +21,13 @@ function CheckoutForm() {
     const [receiptType, setReceiptType] = useState(2)
     // 是否為二連
     const [isReceiptTypeTwo, setIsReceiptTypeTwo] = useState(true)
-
+    // 表單資料
     const [checkoutForm, setCheckoutForm] = useState({
         ship_name: '',
         ship_gender: '',
         ship_email: '',
         ship_phone: '',
+        carrier_id: 0,
         ship_county: '',
         ship_district: '',
         ship_address: '',
@@ -36,6 +38,8 @@ function CheckoutForm() {
         bonus: 0,
         ship_pay_by: ''
     })
+    // 驗證錯誤資料
+    const [errors, setErrors] = useState({})
 
     const handleFormChange = ((key, value) => {
         let _form = Object.assign({}, checkoutForm)
@@ -70,6 +74,14 @@ function CheckoutForm() {
     const findDistricts = (cityName) => find(propEq(cityName, 'CityName'))(CityCountyData)?.AreaList
     // 區域選項 (符合下拉式選單的格式)
     const districtOpts = (cityName) => map((d) => ({ value: d.AreaName, label: d.AreaName, zip: d.ZipCode }), findDistricts(cityName))
+    // 欄位是否錯誤
+    const hasError = (name) => { return (name in errors) } 
+    // 欄位是否錯誤 className
+    const hasErrorInput = (name) => { return (hasError(name) ? styles.errorInput : '')}
+    // 提示錯誤 className
+    const hasErrorMsg = (name) => {  return hasError(name) ? '' : 'hidden' }
+    // 提示錯誤
+    const errorMsg = (name) => { return hasError(name) ? errors[name][0] : '' }
 
     // 發票 change 事件處理
     const handleReceiptChange = (e => {
@@ -130,6 +142,7 @@ function CheckoutForm() {
 
     // 資料錯誤處理
     const handleValidationErrors = (errorJson) => {
+        setErrors(errorJson)
         console.log('handleValidationErrors')
         console.error('伺服器錯誤:', errorJson);
     }
@@ -145,7 +158,8 @@ function CheckoutForm() {
                         {/* <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p> */}
 
                         <div className="mt-10 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-6">
-                            <div className="sm:col-span-2">
+
+                            <div className="sm:col-span-2 sm:col-start-1">
                                 <label htmlFor="first-name" className="inline-block text-sm font-medium leading-6 text-gray-900">
                                     收件人
                                 </label>
@@ -154,16 +168,21 @@ function CheckoutForm() {
                                     <input
                                         type="text"
                                         placeholder="收件人"
-                                        className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className={`${styles.input} ` + hasErrorInput('ship_name')}
                                         value={checkoutForm.ship_name}
                                         onChange={e => { handleFormChange('ship_name', e.target.value) }}
                                     />
+                                    <span className={`${styles.errorMsg} ` + hasErrorMsg('ship_name')}>
+                                        {errorMsg('ship_name')}
+                                    </span>
                                 </div>
                             </div>
 
+                            
+
                             <div className="sm:col-span-3">
 
-                                <div className="flex mt-8 gap-x-3">
+                                <div className="flex mt-8 gap-x-3 h-9">
                                     <div className="flex items-center gap-x-3">
                                         <input
                                             id="gender-male"
@@ -190,8 +209,11 @@ function CheckoutForm() {
                                             小姐
                                         </label>
                                     </div>
-
-
+                                </div>
+                                <div>
+                                    <span className={`${styles.errorMsg} ${hasErrorMsg('ship_gender')}`}>
+                                        {errorMsg('ship_gender')}
+                                    </span>
                                 </div>
                             </div>
 
@@ -208,10 +230,13 @@ function CheckoutForm() {
                                         name="email"
                                         type="email"
                                         placeholder="E-mail"
-                                        className="block w-full rounded-md border-0 py-1.5 px-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className={`${styles.input} ${hasErrorInput('ship_email')}`}
                                         value={checkoutForm.ship_email}
                                         onChange={e => { handleFormChange('ship_email', e.target.value) }}
                                     />
+                                    <span className={`${styles.errorMsg} ${hasErrorMsg('ship_email')}`}>
+                                        {errorMsg('ship_email')}
+                                    </span>
                                 </div>
                             </div>
 
@@ -225,10 +250,13 @@ function CheckoutForm() {
                                         name="phone"
                                         type="phone"
                                         placeholder="聯絡電話"
-                                        className="block w-full rounded-md border-0 py-1.5 px-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className={`${styles.input} ${hasErrorInput('ship_phone')}`}
                                         value={checkoutForm.ship_phone}
                                         onChange={e => { handleFormChange('ship_phone', e.target.value) }}
                                     />
+                                    <span className={`${styles.errorMsg} ${hasErrorMsg('ship_phone')}`}>
+                                        {errorMsg('ship_phone')}
+                                    </span>
                                 </div>
                             </div>
 
@@ -240,14 +268,16 @@ function CheckoutForm() {
                                 <div className="mt-2">
                                     <Select
                                         name="county"
-                                        className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                        className={`${styles.select} ${hasErrorInput('ship_county')}`}
                                         placeholder='選擇城市'
                                         options={cities()}
                                         onChange={handleCityChange}
                                         value={selectedCity(city)}
                                     />
-
                                 </div>
+                                <span className={`${styles.errorMsg} ${hasErrorMsg('ship_county')}`}>
+                                    {errorMsg('ship_county')}
+                                </span>
                             </div>
 
                             <div className="sm:col-span-2">
@@ -255,26 +285,29 @@ function CheckoutForm() {
                                 <div className="mt-8">
                                     <Select
                                         name="district"
-                                        className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                        className={`${styles.select} ${hasErrorInput('ship_district')}`}
                                         placeholder='選擇地區'
                                         options={districts}
                                         onChange={(e) => setDistrict(e.value)}
                                         value={selectedDistrict(district)}
                                     />
-
                                 </div>
+                                <span className={`${styles.errorMsg} ${hasErrorMsg('ship_district')}`}>
+                                    {errorMsg('ship_district')}
+                                </span>
                             </div>
 
                             <div className="sm:col-span-4">
-                                <div>
                                     <input
                                         type="text"
                                         placeholder="地址"
-                                        className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className={`${styles.input} ${hasErrorInput('ship_address')}`}
                                         value={checkoutForm.ship_address}
                                         onChange={e => { handleFormChange('ship_address', e.target.value) }}
                                     />
-                                </div>
+                                    <span className={`${styles.errorMsg} ${hasErrorMsg('ship_address')}`}>
+                                        {errorMsg('ship_address')}
+                                    </span>
                             </div>
 
                             <div className="sm:col-span-1 sm:col-start-1">
@@ -283,12 +316,11 @@ function CheckoutForm() {
                                 </label>
                                 <div className="mt-2">
                                     <Select
-                                        className="block w-full rounded-md border-0  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                        className={styles.select}
                                         options={receiptTypes}
                                         onChange={handleReceiptChange}
                                         value={selectedReceiptType()}
                                     />
-
                                 </div>
                             </div>
 
@@ -300,9 +332,12 @@ function CheckoutForm() {
                                     <input
                                         type="text"
                                         placeholder="統一編號"
-                                        className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className={`${styles.input} ${hasErrorInput('ship_three_id')}`}
                                         onChange={e => handleFormChange('ship_three_id', e.target.value)}
                                     />
+                                    <span className={`${styles.errorMsg} ${hasErrorMsg('ship_three_id')}`}>
+                                        {errorMsg('ship_three_id')}
+                                    </span>
                                 </div>
                             </div>
 
@@ -314,9 +349,12 @@ function CheckoutForm() {
                                     <input
                                         type="text"
                                         placeholder="公司名稱"
-                                        className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className={`${styles.input} ${hasErrorInput('ship_three_company')}`}
                                         onChange={e => handleFormChange('ship_three_company', e.target.value)}
                                     />
+                                    <span className={`${styles.errorMsg} ${hasErrorMsg('ship_three_company')}`}>
+                                        {errorMsg('ship_three_company')}
+                                    </span>
                                 </div>
                             </div>
 
@@ -328,7 +366,7 @@ function CheckoutForm() {
                                     <textarea
                                         rows={2}
                                         placeholder='備註'
-                                        className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className={styles.input}
                                         value={checkoutForm.ship_memo}
                                         onChange={e => { handleFormChange('ship_memo', e.target.value) }}
                                     />
@@ -343,7 +381,7 @@ function CheckoutForm() {
                                     <input
                                         type="text"
                                         placeholder="使用紅利"
-                                        className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className={styles.input}
                                         onChange={e => { handleFormChange('bonus', e.target.value) }}
                                         value={checkoutForm.bonus}
                                         onBlur={checkBonus}
@@ -352,7 +390,6 @@ function CheckoutForm() {
                             </div>
 
                             <div className="sm:col-span-4 sm:col-start-1">
-
 
                                 <label className="inline-block text-sm font-medium leading-6 text-gray-900">
                                     付款方式
@@ -399,9 +436,11 @@ function CheckoutForm() {
                                             貨到付款
                                         </label>
                                     </div>
-
-
                                 </div>
+
+                                <span className={`${styles.errorMsg} ${hasErrorMsg('ship_pay_by')}`}>
+                                    {errorMsg('ship_pay_by')}
+                                </span>
                             </div>
 
                         </div>
