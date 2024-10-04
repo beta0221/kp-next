@@ -61,6 +61,7 @@ function kart() {
     return (
         <KartContext.Provider value={
             {
+                cartItems,
                 reloadCartItems,
                 updateQuantity,
                 user,
@@ -73,9 +74,7 @@ function kart() {
                 <div className='container mx-auto max-w-3xl py-4 px-4 sm:py-16 sm:px-8'>
                     <h1>購物車</h1>
 
-                    <Cart cartItems={cartItems} reloadCartItems={reloadCartItems} />
-
-                    
+                    <Cart />
                     <CheckoutForm />
                 </div>  
 

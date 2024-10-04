@@ -149,10 +149,19 @@ function CheckoutForm() {
 
     // 結帳
     const checkout = (e) => {
+
         const isValid = validateForm()
         if (!isValid) { return }
+        
+        const items = map((item) => ({
+            slug: item.slug,
+            quantity: item.quantity
+        }), kartContext.cartItems) 
+        
+        let _checkoutForm = Object.assign({}, checkoutForm)
+        _checkoutForm['items'] = items
 
-        CartApi.checkout(checkoutForm)
+        CartApi.checkout(_checkoutForm)
             .then(res => {
                 // console.log(res.status)
                 console.log(res)
@@ -195,8 +204,6 @@ function CheckoutForm() {
                 <div className="space-y-12">
 
                     <div className="border-b border-gray-900/10 pb-12">
-                        {/* <h2 className="text-base font-semibold leading-7 text-gray-900">{kartContext.checkoutTotal}</h2> */}
-                        {/* <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p> */}
 
                         <div className="mt-10 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-6">
 
@@ -487,21 +494,18 @@ function CheckoutForm() {
                         </div>
                     </div>
 
-
                 </div>
 
                 <div className="mt-6 flex items-center justify-end gap-x-4">
                     <div
                         type="button"
                         className="btn btn-blue"
-                        onClick={preStep}
-                    >
+                        onClick={preStep}>
                         上一步
                     </div>
                     <div
                         className="btn btn-green"
-                        onClick={checkout}
-                    >
+                        onClick={checkout}>
                         送出訂單
                     </div>
                 </div>

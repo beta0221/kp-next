@@ -5,7 +5,7 @@ import KartContext from 'utilities/KartContext'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import authHeaders from 'utilities/Request'
 
-function Cart({ cartItems, reloadCartItems }) {
+function Cart() {
 
     const navbarContext = useContext(NavbarContext)
     const kartContext = useContext(KartContext)
@@ -19,7 +19,7 @@ function Cart({ cartItems, reloadCartItems }) {
         })
         const data = await res.json()
         navbarContext.reloadCartItems()
-        reloadCartItems()
+        kartContext.reloadCartItems()
     }
 
     // 數量 變更
@@ -30,7 +30,7 @@ function Cart({ cartItems, reloadCartItems }) {
     return (
         <>
             <ul role="list" className="divide-y divide-gray-100">
-                {cartItems.map((item) => (
+                {kartContext.cartItems.map((item) => (
                     <li key={item.id} className="flex justify-between gap-x-6 py-5">
 
                         <div className="flex min-w-0 gap-x-4">
