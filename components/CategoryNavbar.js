@@ -342,7 +342,7 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                                         紅利：{user.bonus}
                                                     </span>
 
-                                                    <a href='/' className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                    <a href='/bill' className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                                         我的訂單
                                                     </a>
 

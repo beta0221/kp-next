@@ -157,7 +157,7 @@ function CheckoutForm() {
             slug: item.slug,
             quantity: item.quantity
         }), kartContext.cartItems) 
-        
+
         let _checkoutForm = Object.assign({}, checkoutForm)
         _checkoutForm['items'] = items
 
@@ -198,7 +198,7 @@ function CheckoutForm() {
     }
 
     return (
-        <div className={(kartContext.cartConfirmed ? '' : 'hidden')}>
+        <div className={`${kartContext.cartConfirmed ? '' : 'hidden'}`}>
             <h1>訂購人資訊</h1>
             <form>
                 <div className="space-y-12">
