@@ -77,14 +77,18 @@ function bill() {
                                     <td class="px-6 py-4">
                                         {order.pay_by}
                                     </td>
-                                    <td class="px-6 py-4">
-                                        -
+                                    <td class={`px-6 py-4 ${(order.isStatusComplete) ? 'text-green-700' : ''}`}>
+                                        {order.status}
+                                    </td>
+                                    <td class={`px-6 py-4 ${(order.isShipmentComplete) ? 'text-green-700' : ''}`}>
+                                        {order.shipment}
                                     </td>
                                     <td class="px-6 py-4">
-                                        -
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        -
+                                        {
+                                            (order.cancelable) ?
+                                            <button className='btn btn-red'>取消訂單</button> :
+                                            <span>-</span>
+                                        }
                                     </td>
                                     
                                 </tr>
