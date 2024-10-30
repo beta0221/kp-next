@@ -84,11 +84,7 @@ function bill() {
                                         {order.shipment}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {
-                                            (order.cancelable) ?
-                                            <button className='btn btn-red'>取消訂單</button> :
-                                            <span>-</span>
-                                        }
+                                        <button className={`btn ${(order.cancelable) ? 'btn-red' : 'btn-disabled'}`} >取消訂單</button>
                                     </td>
                                     
                                 </tr>
