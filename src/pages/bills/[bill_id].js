@@ -10,6 +10,7 @@ function detail() {
     const [bill, setBill] = useState({})
     const [products, setProducts] = useState([])
     const [cardInfo, setCartInfo] = useState({})
+    const [atmInfo, setAtmInfo] = useState({})
 
     useEffect(() => {
         const bill_id = searchParams.get('bill_id')
@@ -19,6 +20,7 @@ function detail() {
                 setBill(res.bill)
                 setProducts(res.products)
                 setCartInfo(res.cardInfo)
+                setAtmInfo(res.atmInfo)
             })
     }, [searchParams])
 
@@ -37,8 +39,7 @@ function detail() {
 
                         <dl className="divide-y divide-gray-100">
 
-
-                            {(cardInfo.Card4No != undefined) &&
+                            {(Object.keys(cardInfo).length > 0) &&
                                 <>
                                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2 bg-slate-300">
                                         <dt className="text-xl font-medium text-gray-900">信用卡資訊</dt>
@@ -51,19 +52,46 @@ function detail() {
                                 </>
                             }
 
+                            {(Object.keys(atmInfo).length > 0) &&
+                                <>
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2 bg-slate-300">
+                                        <dt className="text-xl font-medium text-gray-900">ATM轉帳資訊</dt>
+                                    </div>
+
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
+                                        <dt className="text-sm/6 font-medium text-gray-900">銀行代碼</dt>
+                                        <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{atmInfo.BankCode}</dd>
+                                    </div>
+
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
+                                        <dt className="text-sm/6 font-medium text-gray-900">虛擬帳號</dt>
+                                        <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{atmInfo.vAccount}</dd>
+                                    </div>
+
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
+                                        <dt className="text-sm/6 font-medium text-gray-900">繳費期限</dt>
+                                        <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{atmInfo.ExpireDate}</dd>
+                                    </div>
+                                </>
+                            }
+
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2 bg-slate-300">
                                 <dt className="text-xl font-medium text-gray-900">收貨人</dt>
                             </div>
 
-                            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
-                                <dt className="text-sm/6 font-medium text-gray-900">姓名</dt>
-                                <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{bill.ship_name}</dd>
-                            </div>
+                            {(bill.ship_name != "*" && bill.ship_phone != "*") &&
+                                <>
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
+                                        <dt className="text-sm/6 font-medium text-gray-900">姓名</dt>
+                                        <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{bill.ship_name}</dd>
+                                    </div>
 
-                            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
-                                <dt className="text-sm/6 font-medium text-gray-900">電話</dt>
-                                <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{bill.ship_phone}</dd>
-                            </div>
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
+                                        <dt className="text-sm/6 font-medium text-gray-900">電話</dt>
+                                        <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{bill.ship_phone}</dd>
+                                    </div>
+                                </>
+                            }
 
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
                                 <dt className="text-sm/6 font-medium text-gray-900">信箱</dt>
@@ -77,7 +105,34 @@ function detail() {
 
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
                                 <dt className="text-sm/6 font-medium text-gray-900">寄送地址</dt>
-                                <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{bill.address}</dd>
+                                {(bill.ship_name != "*" && bill.ship_phone != "*") &&
+                                    <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">{bill.address}</dd>
+                                }
+
+                                {(bill.ship_name == "*" && bill.ship_phone == "*") &&
+                                    <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                        <ul role="list" className="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                            {JSON.parse(bill.address).map((target) => (
+                                                <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm/6">
+                                                    <div className="flex w-0 flex-1 items-center">
+
+                                                        <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                                                            <span className="truncate font-medium">{target.name}</span>
+                                                            <span className="flex-shrink-0 text-gray-400">地址：{target.address} ; 電話：{target.phone}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="ml-4 flex-shrink-0">
+                                                        <span className="truncate text-gray-600 font-medium">{target.quantity}</span>
+
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </dd>
+                                }
+
+
+
                             </div>
 
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2 bg-slate-300">
@@ -138,7 +193,7 @@ function detail() {
                                                     </div>
                                                 </div>
                                                 <div className="ml-4 flex-shrink-0">
-                                                    <span className="truncate text-indigo-600 font-medium">${ parseInt(product.price) * parseInt(product.quantity)}</span>
+                                                    <span className="truncate text-indigo-600 font-medium">${parseInt(product.price) * parseInt(product.quantity)}</span>
 
                                                 </div>
                                             </li>
