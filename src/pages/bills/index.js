@@ -66,13 +66,13 @@ function bill() {
                                         {order.created_at}
                                     </th>
                                     <td class="px-6 py-4 text-blue-600">
-                                        <a href='/'>{order.bill_id}</a>
+                                        <a href={`/bills/${order.bill_id}`} target='_blank'>{order.bill_id}</a>
                                     </td>
                                     <td class="px-6 py-4 text-red-600">
-                                        {order.bonus_use}
+                                        -{order.bonus_use}
                                     </td>
                                     <td class="px-6 py-4 text-blue-600">
-                                        {order.price}
+                                        ${order.price}
                                     </td>
                                     <td class="px-6 py-4">
                                         {order.pay_by}
@@ -84,7 +84,7 @@ function bill() {
                                         {order.shipment}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <button className={`btn ${(order.cancelable) ? 'btn-red' : 'btn-disabled'}`} >取消訂單</button>
+                                        <button className={`btn ${(order.isCancelable) ? 'btn-red' : 'btn-disabled'}`} >取消訂單</button>
                                     </td>
                                     
                                 </tr>
