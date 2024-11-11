@@ -163,8 +163,9 @@ function CheckoutForm() {
 
         CartApi.checkout(_checkoutForm)
             .then(res => {
-                // console.log(res.status)
                 console.log(res)
+                if(!res.bill_id) { return }
+                handleSuccessRedirect(res.bill_id)
             })
             .catch(error => {
                 try {
@@ -174,6 +175,21 @@ function CheckoutForm() {
                     console.error('發生錯誤:', error.message); // 如果無法解析為 JSON，則顯示普通錯誤訊息
                 }
             })
+    }
+
+    // 結帳成功後 導向
+    const handleSuccessRedirect = (bill_id) => {
+        console.log('結帳成功後 導向:' + bill_id)
+        
+        // { CREDIT, ATM, cod }
+        switch (checkoutForm.ship_pay_by) {
+            case "cod":
+                window.location.href = `/bills/${bill_id}`
+                break;
+            default:
+                window.location.href = `/bills/payment/${bill_id}`
+                break;
+        }
     }
 
     // 驗證 表單資料
