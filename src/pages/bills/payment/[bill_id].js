@@ -2,6 +2,7 @@ import MainTemplate from "components/template/MainTemplate";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import OrderApi from "utilities/service/OrderApi";
+import authGuard from 'components/AuthGuard';
 
 function payment() {
 
@@ -101,4 +102,4 @@ function payment() {
     );
 }
 
-export default payment;
+export default authGuard(payment);

@@ -1,9 +1,14 @@
 
 import { useState } from "react";
+import { useRouter } from 'next/router';
 import MainTemplate from "components/template/MainTemplate"
 import { LockClosedIcon } from '@heroicons/react/20/solid'
+import guestGuard from "components/GuestGuard";
 
 function login() {
+
+    const router = useRouter();
+    const { redirect } = router.query; // 獲取重定向的目標路徑
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -26,6 +31,7 @@ function login() {
 
         if (data.access_token) {
             localStorage.setItem("token", data.access_token)
+            router.replace(redirect || '/');
         }
 
     }
@@ -127,4 +133,4 @@ function login() {
     );
 }
 
-export default login;
+export default guestGuard(login);

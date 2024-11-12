@@ -5,6 +5,7 @@ import Cart from 'components/cart/Cart'
 import CheckoutForm from 'components/cart/CheckoutForm';
 import authHeaders from 'utilities/Request';
 import AuthApi from 'utilities/service/AuthApi';
+import authGuard from 'components/AuthGuard';
 
 
 function kart() {
@@ -83,4 +84,4 @@ function kart() {
     );
 }
 
-export default kart;
+export default authGuard(kart);

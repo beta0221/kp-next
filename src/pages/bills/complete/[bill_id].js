@@ -3,8 +3,9 @@ import BillDisplay from "components/bill/BillDisplay";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import OrderApi from "utilities/service/OrderApi";
-
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import authGuard from 'components/AuthGuard';
+
 function complete() {
 
     const searchParams = useSearchParams()
@@ -75,4 +76,4 @@ function complete() {
     );
 }
 
-export default complete;
+export default authGuard(complete);
