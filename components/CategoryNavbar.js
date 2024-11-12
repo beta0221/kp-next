@@ -14,7 +14,7 @@ const navigation = {
     ],
     pages: [
         { name: '金園廚房', href: '/' },
-        { name: '訂購相關', href: '/' },
+        { name: '訂購相關', href: '/guide' },
         { name: '聯絡我們', href: '/contactUs' },
     ],
 }
