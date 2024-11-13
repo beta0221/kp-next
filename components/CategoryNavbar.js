@@ -186,7 +186,7 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                             </a>
                                         </div>
                                         <div className="flow-root">
-                                            <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
+                                            <a href="/register" className="-m-2 block p-2 font-medium text-gray-900">
                                                 註冊
                                             </a>
                                         </div>
@@ -356,7 +356,7 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                                         登入
                                                     </a>
                                                     <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                                                    <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                    <a href="/register" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                                         註冊
                                                     </a>
                                                 </>)
