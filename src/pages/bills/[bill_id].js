@@ -3,6 +3,7 @@ import BillDisplay from "components/bill/BillDisplay";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import OrderApi from "utilities/service/OrderApi"
+import AuthGuard from "components/AuthGuard";
 
 function Detail() {
 
@@ -39,4 +40,4 @@ function Detail() {
     );
 }
 
-export default Detail;
+export default AuthGuard(Detail);

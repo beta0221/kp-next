@@ -1,3 +1,4 @@
+import AuthGuard from "components/AuthGuard";
 import MainTemplate from "components/template/MainTemplate";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -101,4 +102,4 @@ function Payment() {
     );
 }
 
-export default Payment;
+export default AuthGuard(Payment);

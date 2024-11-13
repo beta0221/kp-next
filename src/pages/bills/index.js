@@ -4,6 +4,7 @@ import { Fragment, useState, useEffect } from 'react'
 import MainTemplate from "components/template/MainTemplate"
 import OrderApi from "utilities/service/OrderApi";
 import Pagination from 'components/pagination/Pagination';
+import AuthGuard from 'components/AuthGuard';
 
 function Bill() {
 
@@ -105,4 +106,4 @@ function Bill() {
     );
 }
 
-export default Bill;
+export default AuthGuard(Bill);

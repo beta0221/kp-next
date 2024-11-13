@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from 'next/router';
 import MainTemplate from "components/template/MainTemplate"
 import { LockClosedIcon } from '@heroicons/react/20/solid'
-import guestGuard from "components/GuestGuard";
+import GuestGuard from "components/GuestGuard";
 
 function Login() {
 
@@ -133,4 +133,4 @@ function Login() {
     );
 }
 
-export default guestGuard(Login);
+export default GuestGuard(Login);

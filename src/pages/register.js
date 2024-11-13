@@ -3,6 +3,7 @@ import MainTemplate from "components/template/MainTemplate"
 import guestGuard from "components/GuestGuard";
 import styles from "components/cart/CheckoutForm.module.css";
 import FormValidator from 'utilities/FormValidator';
+import GuestGuard from "components/GuestGuard";
 
 function Register() {
 
@@ -150,4 +151,4 @@ function Register() {
     );
 }
 
-export default guestGuard(Register);
+export default GuestGuard(Register);

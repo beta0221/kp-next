@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import OrderApi from "utilities/service/OrderApi";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import Link from 'next/link'
+import AuthGuard from "components/AuthGuard";
 
 function Complete() {
 
@@ -76,4 +77,4 @@ function Complete() {
     );
 }
 
-export default Complete;
+export default AuthGuard(Complete);
