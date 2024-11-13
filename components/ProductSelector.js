@@ -19,7 +19,7 @@ function ProductSelector({ cat, products }) {
                 <dl>
 
                     {products.map((product,index) =>
-                        <ProductSelectorCell index={index} product={product} />
+                        <ProductSelectorCell key={index} index={index} product={product} />
                     )}
 
                 </dl>

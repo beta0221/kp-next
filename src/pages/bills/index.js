@@ -61,8 +61,8 @@ function bill() {
                         </thead>
                         <tbody>
 
-                            {orders.map((order) => (
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            {orders.map((order, index) => (
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={index}>
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {order.created_at}
                                     </th>

@@ -4,6 +4,7 @@ import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import SideCart from "components/SideCart";
 import authHeaders from 'utilities/Request';
+import Link from 'next/link'
 
 const navigation = {
     categories: [
@@ -119,9 +120,9 @@ const CategoryNavbar = ({ loadCartItems }) => {
 
                                     <div className="space-y-6 border-t border-gray-200 py-6 px-4">
                                         <div className="flow-root">
-                                            <a href="/" className="-m-2 block p-2 font-medium text-gray-900">
+                                            <Link href="/" className="-m-2 block p-2 font-medium text-gray-900">
                                                 首頁
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
 
@@ -155,9 +156,9 @@ const CategoryNavbar = ({ loadCartItems }) => {
 
                                                                 <div className="aspect-[7/4] overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
                                                                     <span className="absolute left-2 top-2 inset-0 z-10 text-white" aria-hidden="true" >{cat.name}</span>
-                                                                    <a href={cat.menuImgUrl}>
+                                                                    <Link href={cat.menuImgUrl}>
                                                                         <img src={cat.menuImgUrl} alt={cat.name} className="w-full h-full object-cover object-center" />
-                                                                    </a>
+                                                                    </Link>
                                                                 </div>
 
                                                             </div>
@@ -172,28 +173,28 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                     <div className="space-y-6 border-t border-gray-200 py-6 px-4">
                                         {navigation.pages.map((page) => (
                                             <div key={page.name} className="flow-root">
-                                                <a href={page.href} className="-m-2 block p-2 font-medium text-gray-900">
+                                                <Link href={page.href} className="-m-2 block p-2 font-medium text-gray-900">
                                                     {page.name}
-                                                </a>
+                                                </Link>
                                             </div>
                                         ))}
                                     </div>
 
                                     <div className="space-y-6 border-t border-gray-200 py-6 px-4">
                                         <div className="flow-root">
-                                            <a href="/login" className="-m-2 block p-2 font-medium text-gray-900">
+                                            <Link href="/login" className="-m-2 block p-2 font-medium text-gray-900">
                                                 登入
-                                            </a>
+                                            </Link>
                                         </div>
                                         <div className="flow-root">
-                                            <a href="/register" className="-m-2 block p-2 font-medium text-gray-900">
+                                            <Link href="/register" className="-m-2 block p-2 font-medium text-gray-900">
                                                 註冊
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
 
                                     <div className="border-t border-gray-200 py-6 px-4">
-                                        <a href="#" className="-m-2 flex items-center p-2">
+                                        <Link href="#" className="-m-2 flex items-center p-2">
                                             <img
                                                 src="https://tailwindui.com/img/flags/flag-canada.svg"
                                                 alt=""
@@ -201,7 +202,7 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                             />
                                             <span className="ml-3 block text-base font-medium text-gray-900">CAD</span>
                                             <span className="sr-only">, change currency</span>
-                                        </a>
+                                        </Link>
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>
@@ -228,26 +229,26 @@ const CategoryNavbar = ({ loadCartItems }) => {
 
                                 {/* Logo */}
                                 <div className="ml-4 flex lg:ml-0">
-                                    <a href="/">
+                                    <Link href="/">
                                         <span className="sr-only">Your Company</span>
                                         <img
                                             className="h-8 w-auto"
                                             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                                             alt=""
                                         />
-                                    </a>
+                                    </Link>
                                 </div>
 
                                 {/* Flyout menus */}
                                 <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
                                     <div className="flex h-full space-x-8">
 
-                                        <a
+                                        <Link
                                             href="/"
                                             className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
                                         >
                                             首頁
-                                        </a>
+                                        </Link>
 
                                         {navigation.categories.map((category) => (
                                             <Popover key={category.name} className="flex">
@@ -288,13 +289,13 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                                                                 {cats.map((item) => (
                                                                                     <div key={item.name} className="group relative text-base sm:text-sm">
                                                                                         <div className="aspect-[7/4] overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                                                                            <a href={`/shop/${item.slug}`}>
+                                                                                            <Link href={`/shop/${item.slug}`}>
                                                                                                 <img
                                                                                                     src={item.menuImgUrl}
                                                                                                     alt={item.name}
                                                                                                     className="h-full w-full object-cover"
                                                                                                 />
-                                                                                            </a>
+                                                                                            </Link>
 
                                                                                             <div className='absolute top-2 left-4 text-white'>
                                                                                                 {item.name}
@@ -316,13 +317,13 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                         ))}
 
                                         {navigation.pages.map((page) => (
-                                            <a
+                                            <Link
                                                 key={page.name}
                                                 href={page.href}
                                                 className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
                                             >
                                                 {page.name}
-                                            </a>
+                                            </Link>
                                         ))}
                                     </div>
                                 </Popover.Group>
@@ -342,9 +343,9 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                                         紅利：{user.bonus}
                                                     </span>
 
-                                                    <a href='/bills' className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                    <Link href='/bills' className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                                         我的訂單
-                                                    </a>
+                                                    </Link>
 
                                                     <button className="text-sm font-medium text-gray-700 hover:text-gray-800"
                                                         onClick={() => logout()} >
@@ -352,20 +353,20 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                                     </button>
                                                 </>)
                                                 : (<>
-                                                    <a href="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                    <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                                         登入
-                                                    </a>
+                                                    </Link>
                                                     <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                                                    <a href="/register" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                    <Link href="/register" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                                         註冊
-                                                    </a>
+                                                    </Link>
                                                 </>)
                                         }
 
                                     </div>
 
                                     {/* <div className="hidden lg:ml-8 lg:flex">
-                                        <a href="#" className="flex items-center text-gray-700 hover:text-gray-800">
+                                        <Link href="#" className="flex items-center text-gray-700 hover:text-gray-800">
                                             <img
                                                 src="https://tailwindui.com/img/flags/flag-canada.svg"
                                                 alt=""
@@ -373,15 +374,15 @@ const CategoryNavbar = ({ loadCartItems }) => {
                                             />
                                             <span className="ml-3 block text-sm font-medium">CAD</span>
                                             <span className="sr-only">, change currency</span>
-                                        </a>
+                                        </Link>
                                     </div> */}
 
                                     {/* Search */}
                                     {/* <div className="flex lg:ml-6">
-                                        <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
+                                        <Link href="#" className="p-2 text-gray-400 hover:text-gray-500">
                                             <span className="sr-only">Search</span>
                                             <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
-                                        </a>
+                                        </Link>
                                     </div> */}
 
                                     {/* Cart */}
@@ -398,9 +399,9 @@ const CategoryNavbar = ({ loadCartItems }) => {
 
                                     {/* Checkout */}
                                     <div className="flex lg:ml-6 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded cursor-pointer">
-                                        <a href='/kart'>
+                                        <Link href='/kart'>
                                             <span>結帳</span>
-                                        </a>
+                                        </Link>
                                     </div>
 
 

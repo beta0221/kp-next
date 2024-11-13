@@ -141,8 +141,8 @@ const ContactUs = () => {
                                 <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
 
                                     {
-                                        inputs.map((input) => (
-                                            <div>
+                                        inputs.map((input, index) => (
+                                            <div key={index}>
                                                 <div>
                                                     <label htmlFor="company-website" className="block text-sm font-medium text-gray-700">
                                                         {input.title}

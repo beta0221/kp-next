@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import OrderApi from "utilities/service/OrderApi";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import authGuard from 'components/AuthGuard';
+import Link from 'next/link'
 
 function complete() {
 
@@ -49,7 +50,7 @@ function complete() {
                                 我們衷心感謝您購買我們的產品。
                             </p>
                             <p className="text-lg/8 text-gray-600">
-                                若您對此次交易有任何問題，請隨時<a href="/contactUS" className="text-blue-500">寫信給我們</a>。
+                                若您對此次交易有任何問題，請隨時<Link href="/contactUS" className="text-blue-500">寫信給我們</Link>。
                             </p>
 
                         </div>
@@ -64,10 +65,10 @@ function complete() {
                 />
 
                 <div className="text-center mt-12 mb-12">
-                    <a href="/bills"
+                    <Link href="/bills"
                         className="font-bold py-2 px-10 rounded cursor-pointer btn-green inline-block">
                         我的訂單
-                    </a>
+                    </Link>
                 </div>
 
             </div>

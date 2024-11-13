@@ -6,6 +6,7 @@ import Image from 'next/image'
 import NavbarContext from 'utilities/NavbarContext'
 import authHeaders from 'utilities/Request'
 import KartContext from 'utilities/KartContext'
+import Link from 'next/link'
 
 const myLoader = ({ src }) => {
   return src
@@ -106,9 +107,9 @@ export default function SideCart({openCart, setOpenCart, cartItems}) {
                     </div>
 
                     <div className="px-4 sm:px-6">
-                        <a href='/kart' className='bg-red-500 hover:bg-red-600 text-white rounded block text-center py-4'>
+                        <Link href='/kart' className='bg-red-500 hover:bg-red-600 text-white rounded block text-center py-4'>
                           前往結賬
-                        </a>
+                        </Link>
                     </div>
 
 

@@ -85,8 +85,8 @@ function BillDisplay({bill, cardInfo, atmInfo, products}) {
                         {(bill.ship_name == "*" && bill.ship_phone == "*") &&
                             <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                 <ul role="list" className="divide-y divide-gray-100 rounded-md border border-gray-200">
-                                    {JSON.parse(bill.address).map((target) => (
-                                        <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm/6">
+                                    {JSON.parse(bill.address).map((target, index) => (
+                                        <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm/6" key={index}>
                                             <div className="flex w-0 flex-1 items-center">
 
                                                 <div className="ml-4 flex min-w-0 flex-1 gap-2">
@@ -156,8 +156,8 @@ function BillDisplay({bill, cardInfo, atmInfo, products}) {
                         <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
 
                             <ul role="list" className="divide-y divide-gray-100 rounded-md border border-gray-200">
-                                {products.map((product) => (
-                                    <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm/6">
+                                {products.map((product, index) => (
+                                    <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm/6" key={index}>
                                         <div className="flex w-0 flex-1 items-center">
 
                                             <div className="ml-4 flex min-w-0 flex-1 gap-2">
