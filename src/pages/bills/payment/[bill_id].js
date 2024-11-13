@@ -2,9 +2,8 @@ import MainTemplate from "components/template/MainTemplate";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import OrderApi from "utilities/service/OrderApi";
-import authGuard from 'components/AuthGuard';
 
-function payment() {
+function Payment() {
 
     const searchParams = useSearchParams()
 
@@ -102,4 +101,4 @@ function payment() {
     );
 }
 
-export default authGuard(payment);
+export default Payment;

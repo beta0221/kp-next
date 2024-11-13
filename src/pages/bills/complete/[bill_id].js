@@ -4,10 +4,9 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import OrderApi from "utilities/service/OrderApi";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
-import authGuard from 'components/AuthGuard';
 import Link from 'next/link'
 
-function complete() {
+function Complete() {
 
     const searchParams = useSearchParams()
 
@@ -77,4 +76,4 @@ function complete() {
     );
 }
 
-export default authGuard(complete);
+export default Complete;

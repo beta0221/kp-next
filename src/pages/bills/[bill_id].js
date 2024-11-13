@@ -3,9 +3,8 @@ import BillDisplay from "components/bill/BillDisplay";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import OrderApi from "utilities/service/OrderApi"
-import authGuard from 'components/AuthGuard';
 
-function detail() {
+function Detail() {
 
     const searchParams = useSearchParams()
 
@@ -40,4 +39,4 @@ function detail() {
     );
 }
 
-export default authGuard(detail);
+export default Detail;

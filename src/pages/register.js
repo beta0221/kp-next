@@ -4,7 +4,7 @@ import guestGuard from "components/GuestGuard";
 import styles from "components/cart/CheckoutForm.module.css";
 import FormValidator from 'utilities/FormValidator';
 
-function register() {
+function Register() {
 
     const inputs = [
         {
@@ -150,4 +150,4 @@ function register() {
     );
 }
 
-export default guestGuard(register);
+export default guestGuard(Register);

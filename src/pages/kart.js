@@ -8,7 +8,7 @@ import AuthApi from 'utilities/service/AuthApi';
 import authGuard from 'components/AuthGuard';
 
 
-function kart() {
+function Kart() {
 
     const [cartItems, setCartItems] = useState([])
 
@@ -84,4 +84,4 @@ function kart() {
     );
 }
 
-export default authGuard(kart);
+export default authGuard(Kart);
