@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: '/KP_HOST/:path*',
-        destination: 'http://localhost:8000/:path*',
+        destination: `${process.env.NEXT_PUBLIC_HOST}/:path*`
       },
     ]
   },
