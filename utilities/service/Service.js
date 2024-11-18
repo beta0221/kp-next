@@ -9,6 +9,13 @@ const Service =  {
             'Accept': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
+    },
+    getHeader: function() {
+        return {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Credentials': 'true',
+            'Accept': 'application/json'
+        }
     }
 
 }

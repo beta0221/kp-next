@@ -4,6 +4,7 @@ import guestGuard from "components/GuestGuard";
 import styles from "components/cart/CheckoutForm.module.css";
 import FormValidator from 'utilities/FormValidator';
 import GuestGuard from "components/GuestGuard";
+import AuthApi from "utilities/service/AuthApi";
 
 function Register() {
 
@@ -21,12 +22,12 @@ function Register() {
         {
             title: '密碼',
             name: 'password',
-            type: 'text'
+            type: 'password'
         },
         {
             title: '確認密碼',
-            name: 'confirm_password',
-            type: 'text'
+            name: 'password_confirmation',
+            type: 'password'
         },
         {
             title: '電話',
@@ -40,6 +41,7 @@ function Register() {
         name: '',
         email: '',
         password: '',
+        password_confirmation: '',
         phone: ''
     })
 
@@ -48,6 +50,7 @@ function Register() {
         name: [{ type: 'required' }],
         email: [{ type: 'required' }, { type: 'email' }],
         password: [{ type: 'required' }],
+        password_confirmation: [{ type: 'required' }],
         phone: [{ type: 'required' }]
     }
 
@@ -98,6 +101,12 @@ function Register() {
         const isValid = validateForm()
         if (!isValid) { return }
 
+        AuthApi.register(form)
+            .then(res => {
+                if (res.success) {
+                    window.location.href = '/login'
+                }
+            })
     }
     return (
         <MainTemplate>

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import MainTemplate from "components/template/MainTemplate"
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import GuestGuard from "components/GuestGuard";
+import AuthApi from "utilities/service/AuthApi";
 
 function Login() {
 
@@ -15,24 +16,13 @@ function Login() {
 
     const submit = async () => {
         
-        let body = {email, password}
-
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/auth/login`, {
-            body: JSON.stringify(body),
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Credentials': 'true',
-                'Accept': 'application/json'
-            },
-            method: 'POST'
-        })
-        const data = await res.json()
-        console.log(data)
-
-        if (data.access_token) {
-            localStorage.setItem("token", data.access_token)
-            router.replace(redirect || '/');
-        }
+        AuthApi.login(email, password)
+            .then(res => {
+                if (res.access_token) {
+                    localStorage.setItem("token", res.access_token)
+                    router.replace(redirect || '/');
+                }
+            })
 
     }
 
