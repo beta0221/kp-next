@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import OrderApi from "utilities/service/OrderApi";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import Link from 'next/link'
-import AuthGuard from "components/AuthGuard";
+// import AuthGuard from "components/AuthGuard";
+import Guard from "utilities/Guard";
 
 function Complete() {
 
@@ -16,6 +17,9 @@ function Complete() {
     const [cardInfo, setCartInfo] = useState({})
     const [atmInfo, setAtmInfo] = useState({})
 
+    useEffect(() => {
+        Guard.authOnly()
+    }, []);
 
     useEffect(() => {
         const bill_id = searchParams.get('bill_id')
@@ -77,4 +81,4 @@ function Complete() {
     );
 }
 
-export default AuthGuard(Complete);
+export default Complete;

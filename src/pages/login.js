@@ -1,12 +1,17 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import MainTemplate from "components/template/MainTemplate"
 import { LockClosedIcon } from '@heroicons/react/20/solid'
-import GuestGuard from "components/GuestGuard";
+// import GuestGuard from "components/GuestGuard";
 import AuthApi from "utilities/service/AuthApi";
+import Guard from "utilities/Guard";
 
 function Login() {
+
+    useEffect(() => {
+        Guard.guestOnly()
+    }, []);
 
     const router = useRouter();
     const { redirect } = router.query; // 獲取重定向的目標路徑
@@ -123,4 +128,4 @@ function Login() {
     );
 }
 
-export default GuestGuard(Login);
+export default Login;

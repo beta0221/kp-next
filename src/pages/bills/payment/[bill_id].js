@@ -1,7 +1,8 @@
-import AuthGuard from "components/AuthGuard";
+// import AuthGuard from "components/AuthGuard";
 import MainTemplate from "components/template/MainTemplate";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Guard from "utilities/Guard";
 import OrderApi from "utilities/service/OrderApi";
 
 function Payment() {
@@ -9,6 +10,10 @@ function Payment() {
     const searchParams = useSearchParams()
 
     const [billId, setBillId] = useState("")
+
+    useEffect(() => {
+        Guard.authOnly()
+    }, []);
 
     useEffect(() => {
         const bill_id = searchParams.get('bill_id')
@@ -102,4 +107,4 @@ function Payment() {
     );
 }
 
-export default AuthGuard(Payment);
+export default Payment;

@@ -4,8 +4,9 @@ import KartContext from 'utilities/KartContext';
 import Cart from 'components/cart/Cart'
 import CheckoutForm from 'components/cart/CheckoutForm';
 import AuthApi from 'utilities/service/AuthApi';
-import AuthGuard from 'components/AuthGuard';
+// import AuthGuard from 'components/AuthGuard';
 import CartApi from 'utilities/service/CartApi';
+import Guard from 'utilities/Guard';
 
 
 function Kart() {
@@ -43,6 +44,8 @@ function Kart() {
     }
 
     useEffect(() => {
+        Guard.authOnly()
+
         reloadCartItems()
         AuthApi.getUser().then(user => {
             setUser(user)
@@ -83,4 +86,4 @@ function Kart() {
     );
 }
 
-export default AuthGuard(Kart);
+export default Kart;

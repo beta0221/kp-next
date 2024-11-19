@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MainTemplate from "components/template/MainTemplate"
-import guestGuard from "components/GuestGuard";
 import styles from "components/cart/CheckoutForm.module.css";
 import FormValidator from 'utilities/FormValidator';
-import GuestGuard from "components/GuestGuard";
+// import GuestGuard from "components/GuestGuard";
 import AuthApi from "utilities/service/AuthApi";
+import Guard from "utilities/Guard";
 
 function Register() {
+
+    useEffect(() => {
+        Guard.guestOnly()
+    }, []);
 
     const inputs = [
         {
@@ -160,4 +164,4 @@ function Register() {
     );
 }
 
-export default GuestGuard(Register);
+export default Register;

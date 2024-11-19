@@ -49,7 +49,7 @@ const CategoryNavbar = ({ loadCartItems }) => {
         AuthApi.logout()
             .then((res) => {
                 localStorage.removeItem('token')
-                // window.location.href = "/"
+                window.location.href = "/"
             })
     }
 

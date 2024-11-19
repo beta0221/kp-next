@@ -4,13 +4,18 @@ import { Fragment, useState, useEffect } from 'react'
 import MainTemplate from "components/template/MainTemplate"
 import OrderApi from "utilities/service/OrderApi";
 import Pagination from 'components/pagination/Pagination';
-import AuthGuard from 'components/AuthGuard';
+// import AuthGuard from 'components/AuthGuard';
+import Guard from 'utilities/Guard';
 
 function Bill() {
 
     const [page, setPage] = useState(1)
     const [orders, setOrders] = useState([])
     const [lastPage, setLastPage] = useState(0)
+
+    useEffect(() => {
+        Guard.authOnly()
+    }, []);
 
     useEffect(() => {
         getOrder(page)
@@ -106,4 +111,4 @@ function Bill() {
     );
 }
 
-export default AuthGuard(Bill);
+export default Bill;

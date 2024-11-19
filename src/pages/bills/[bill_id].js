@@ -3,7 +3,8 @@ import BillDisplay from "components/bill/BillDisplay";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import OrderApi from "utilities/service/OrderApi"
-import AuthGuard from "components/AuthGuard";
+import Guard from "utilities/Guard";
+// import AuthGuard from "components/AuthGuard";
 
 function Detail() {
 
@@ -13,6 +14,10 @@ function Detail() {
     const [products, setProducts] = useState([])
     const [cardInfo, setCartInfo] = useState({})
     const [atmInfo, setAtmInfo] = useState({})
+
+    useEffect(() => {
+        Guard.authOnly()
+    }, []);
 
     useEffect(() => {
         const bill_id = searchParams.get('bill_id')
@@ -40,4 +45,4 @@ function Detail() {
     );
 }
 
-export default AuthGuard(Detail);
+export default Detail;
