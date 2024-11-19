@@ -1,7 +1,13 @@
 import Service from "./Service"
 
 const CartApi = {
+    getItems: async function() {
+        const response = await fetch(`${Service.baseUrl}/api/kart/items`, {
+            headers: Service.getAuthHeader()
+        })
 
+        return await response.json()
+    },
     checkout: async function(form) {
         const response = await fetch(`${Service.baseUrl}/api/bill/checkout`, {
             body: JSON.stringify(form),

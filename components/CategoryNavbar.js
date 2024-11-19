@@ -3,8 +3,9 @@ import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import SideCart from "components/SideCart";
-import authHeaders from 'utilities/Request';
 import Link from 'next/link'
+import AuthApi from 'utilities/service/AuthApi';
+import CartApi from 'utilities/service/CartApi';
 
 const navigation = {
     categories: [
@@ -37,22 +38,19 @@ const CategoryNavbar = ({ loadCartItems }) => {
 
     // 載入購物車
     const loadCartItemsRequest = async () => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/items`, {
-            headers: authHeaders()
-        })
-        const _cartItems = await res.json()
-        setCartItems(_cartItems)
+        CartApi.getItems()
+            .then(res => {
+                setCartItems(res)
+            })
     }
 
     // 登出
     const logout = () => {
-        fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/items`, {
-            headers: authHeaders()
-        })
-        .then((res) => {
-            localStorage.removeItem('token')
-            window.location.href = "/"
-        })
+        AuthApi.logout()
+            .then((res) => {
+                localStorage.removeItem('token')
+                // window.location.href = "/"
+            })
     }
 
     useEffect(() => {
@@ -62,10 +60,7 @@ const CategoryNavbar = ({ loadCartItems }) => {
                 setCats(cats)
             })
 
-        fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/auth/user`, {
-            headers: authHeaders()
-        })
-            .then((res) => res.json())
+        AuthApi.getUser()
             .then((data) => {
                 if (data.id) {
                     setUser(data)

@@ -3,9 +3,9 @@ import MainTemplate from "components/template/MainTemplate"
 import KartContext from 'utilities/KartContext';
 import Cart from 'components/cart/Cart'
 import CheckoutForm from 'components/cart/CheckoutForm';
-import authHeaders from 'utilities/Request';
 import AuthApi from 'utilities/service/AuthApi';
 import AuthGuard from 'components/AuthGuard';
+import CartApi from 'utilities/service/CartApi';
 
 
 function Kart() {
@@ -20,15 +20,14 @@ function Kart() {
 
     // 載入購物車
     const reloadCartItems = async () => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/kart/items`, {
-            headers: authHeaders()
-        })
-        let _cartItems = await res.json()
-        _cartItems = _cartItems.map((item) => {
-            item.quantity = 1
-            return item
-        })
-        setCartItems(_cartItems)
+        CartApi.getItems()
+            .then(_cartItems => {
+                _cartItems = _cartItems.map((item) => {
+                    item.quantity = 1
+                    return item
+                })
+                setCartItems(_cartItems)
+            })
     }
 
     // 更新數量

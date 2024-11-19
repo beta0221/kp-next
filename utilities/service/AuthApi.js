@@ -27,6 +27,14 @@ const AuthApi = {
         })
             
         return await response.json()
+    },
+    logout: async function() {
+        const response = await fetch(`${Service.baseUrl}/api/auth/logout`, {
+            headers: Service.getAuthHeader(),
+            method: 'POST'
+        })
+
+        return await response.json()
     }
 
 }
