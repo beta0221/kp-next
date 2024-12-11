@@ -10,6 +10,13 @@ const AuthApi = {
             
         return await response.json()
     },
+    getAddresses: async function() {
+        const response = await fetch(`${Service.baseUrl}/api/auth/addresses`, {
+            headers: Service.getAuthHeader()
+        })
+            
+        return await response.json()
+    },
     login: async function(email, password) {
         const response = await fetch(`${Service.baseUrl}/api/auth/login`, {
             body: JSON.stringify({email, password}),

@@ -30,6 +30,13 @@
     @apply bg-red-400;
 }
 
+.btn-orange {
+    @apply bg-orange-400 text-white;
+}
+.btn-orange:hover {
+    @apply bg-orange-500;
+}
+
 .btn-grey {
     @apply bg-slate-500 text-white;
 }

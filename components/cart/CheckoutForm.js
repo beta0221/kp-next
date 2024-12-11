@@ -1,16 +1,60 @@
 import { useState, useEffect, useContext } from 'react'
-import { StarIcon } from '@heroicons/react/24/outline'
+import { StarIcon, ClipboardDocumentListIcon } from '@heroicons/react/24/outline'
 import { map, find, propEq, forEach, isNil } from 'ramda';
 import CityCountyData from './CityCountyData'
 import Select from 'react-select';
 import KartContext from 'utilities/KartContext'
 import CartApi from 'utilities/service/CartApi';
+import AuthApi from 'utilities/service/AuthApi';
 import styles from './CheckoutForm.module.css';
 import FormValidator from 'utilities/FormValidator';
 
 function CheckoutForm() {
 
     const kartContext = useContext(KartContext)
+
+    // 是否使用 常用地址
+    const [useFavoriteAddress, setUseFavoriteAddress] = useState(false)
+    // 可選擇 常用地址
+    const [favoriteAddresses, setFavoriteAddresses] = useState([])
+    // 被選 常用地址
+    const [favoriteAddress, setFavoriteAddress] = useState({value: '', label: '請選擇常用地址'})
+    // 常用地址 選項
+    const option_favoriteAddresses = () => map((address) => ({value: address.id, label: address.address}), favoriteAddresses)
+    // 常用地址 change 事件處理
+    const handleFavoriteAddressChange = (id => {
+        let address = favoriteAddresses.find(element => element.id == id)
+        setFavoriteAddress({value: address.id, label: address.address})
+    })
+    // 是否使用常用地址 change 事件處理
+    const handleUseFavoriteAddressChange = (use => {
+        setUseFavoriteAddress(use)
+        let _validations = Object.assign({}, validations)
+        if (use) {
+            delete _validations['ship_county']
+            delete _validations['ship_district']
+            delete _validations['ship_address']
+        } else {
+            _validations['ship_county'] = [{ type: 'required' }]
+            _validations['ship_district'] = [{ type: 'required' }]
+            _validations['ship_address'] = [{ type: 'required' }]
+        }
+        setValidations(_validations)
+    })
+    // 取得 常用地址
+    useEffect(() => {
+        AuthApi.getAddresses()
+            .then(addresses => { 
+                setFavoriteAddresses(addresses)       
+            })
+    }, [])
+    // 選擇第一個常用地址
+    useEffect(() => {
+        let empty = favoriteAddresses.length == 0
+        if (!empty) { handleFavoriteAddressChange(favoriteAddresses[0].id) }
+        handleUseFavoriteAddressChange(!empty)
+    }, [favoriteAddresses])
+    
 
     // 被選區域
     const [district, setDistrict] = useState(null)
@@ -32,6 +76,7 @@ function CheckoutForm() {
         ship_county: '',
         ship_district: '',
         ship_address: '',
+        add_favorite: false,
         ship_receipt: 2,
         ship_three_id: '',
         ship_three_company: '',
@@ -160,7 +205,9 @@ function CheckoutForm() {
 
         let _checkoutForm = Object.assign({}, checkoutForm)
         _checkoutForm['items'] = items
-
+        _checkoutForm['use_favorite_address'] = useFavoriteAddress
+        _checkoutForm['favorite_address'] = favoriteAddress.value
+        
         CartApi.checkout(_checkoutForm)
             .then(res => {
                 console.log(res)
@@ -329,7 +376,21 @@ function CheckoutForm() {
                                     地址
                                 </label>
                                 <StarIcon className="mx-1 inline-block align-top h-5 w-5 text-red-400" aria-hidden="true" />
-                                <div className="mt-2">
+                            </div>
+
+                            <div className={`${useFavoriteAddress ? '' : 'hidden'} sm:col-span-4 sm:col-start-1`}>
+                                <Select
+                                    name="favorite_address"
+                                    placeholder='常用地址'
+                                    options={option_favoriteAddresses()}
+                                    className={`${styles.input}`}
+                                    onChange={e => handleFavoriteAddressChange(e.value)}
+                                    value={favoriteAddress}
+                                />
+                            </div>
+
+                            <div className={`${useFavoriteAddress ? 'hidden' : ''} sm:col-span-2 sm:col-start-1`}>
+                                <div>
                                     <Select
                                         name="county"
                                         placeholder='選擇城市'
@@ -344,9 +405,9 @@ function CheckoutForm() {
                                 </span>
                             </div>
 
-                            <div className="sm:col-span-2">
+                            <div className={`${useFavoriteAddress ? 'hidden' : ''} sm:col-span-2`}>
 
-                                <div className="mt-8">
+                                <div>
                                     <Select
                                         name="district"
                                         placeholder='選擇地區'
@@ -361,7 +422,7 @@ function CheckoutForm() {
                                 </span>
                             </div>
 
-                            <div className="sm:col-span-4">
+                            <div className={`${useFavoriteAddress ? 'hidden' : ''} sm:col-span-4 sm:col-start-1`}>
                                 <input
                                     type="text"
                                     placeholder="地址"
@@ -372,6 +433,30 @@ function CheckoutForm() {
                                 <span className={`${styles.errorMsg} ${hasErrorMsg('ship_address')}`}>
                                     {errorMsg('ship_address')}
                                 </span>
+                            </div>
+
+                            <div className="sm:col-span-4 sm:col-start-1 flex items-center justify-start gap-x-4">
+                                <div 
+                                    className={`${useFavoriteAddress ? '' : 'hidden'} btn btn-orange`} 
+                                    onClick={e => handleUseFavoriteAddressChange(false)}>
+                                        其他地址
+                                </div>
+                                <div 
+                                    className={`${useFavoriteAddress ? 'hidden' : ''}  ${(favoriteAddresses.length == 0) ? 'hidden' : ''} btn btn-blue`} 
+                                    onClick={e => handleUseFavoriteAddressChange(true)}>
+                                        <span className='align-middle'>常用地址</span>
+                                        <ClipboardDocumentListIcon className='ml-1 inline-block h-5 w-5 align-middle' />
+                                </div>
+                                <div
+                                    className={`${useFavoriteAddress ? 'hidden' : ''}`}>
+                                        <label className='text-sm font-medium text-gray-600 align-middle'>
+                                            設為常用地址
+                                        </label>
+                                        <input type='checkbox' 
+                                            className='ml-1 w-6 h-6 align-middle' 
+                                            onChange={e => handleFormChange('add_favorite', e.target.checked)}
+                                            />
+                                </div>
                             </div>
 
                             <div className="sm:col-span-1 sm:col-start-1">
