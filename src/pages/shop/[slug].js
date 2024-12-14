@@ -3,24 +3,43 @@ import { useEffect, useState } from "react";
 import ProductSelector from 'components/ProductSelector';
 import MainTemplate from "components/template/MainTemplate"
 
-export async function getStaticProps(context) {
-    const slug = context.params.slug
+// export async function getStaticProps(context) {
+//     const slug = context.params.slug
+//     const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/shop/${slug}`)
+//     const data = await res.json()
+//     return {
+//         props: {
+//             cat: data.cat,
+//             products: data.products
+//         }
+//     }
+// }
+
+// export async function getStaticPaths() {
+//     const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/shop/paths`)
+//     const paths = await res.json()
+//     return {
+//         paths: paths,
+//         fallback: false
+//     }
+// }
+
+export async function getServerSideProps(context) {
+
+    const slug = context.query.slug
     const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/shop/${slug}`)
+    if (!res.ok) {
+        return {
+            notFound: true,
+        }
+    }
+
     const data = await res.json()
     return {
         props: {
             cat: data.cat,
             products: data.products
         }
-    }
-}
-
-export async function getStaticPaths() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/shop/paths`)
-    const paths = await res.json()
-    return {
-        paths: paths,
-        fallback: false
     }
 }
 

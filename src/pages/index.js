@@ -4,8 +4,8 @@ import ProductList from "components/ProductList"
 import BlogSection from "components/BlogSection"
 import Testimonial from "components/Testimonial"
 
-export async function getStaticProps(context) {
-
+// export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   const [bannersRes, catsRes] = await Promise.all([
     fetch(`${process.env.NEXT_PUBLIC_HOST}/api/landing/banners`),
     fetch(`${process.env.NEXT_PUBLIC_HOST}/api/landing/categories`)
